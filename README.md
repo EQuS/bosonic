@@ -53,7 +53,7 @@ Please use `pip install -e '.[dev]'` if you are a `zsh` user.
 
 Installing the package in the usual non-editable mode would require a developer to upgrade their pip installation (i.e. run `pip install --upgrade .`) every time they update the package source code.
 
-#### Building documentation locally
+#### Building documentation for Devs
 
 Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
 ```bash

@@ -69,7 +69,7 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     keywords="bosonic jax qubits cQED QEC GKP quantum error correction",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     project_urls={
         "Bug Tracker": "https://github.com/Phionx/bosonic-jax/issues",
         "Documentation": "https://github.com/Phionx/bosonic-jax",
