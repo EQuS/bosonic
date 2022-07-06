@@ -1,0 +1,24 @@
+site_name: bosonic-jax 
+# TODO: update with your package name
+
+theme:
+  name: "material"
+  palette:
+    primary: grey
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+      - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: summary.md
+  - section-index
+  - mkdocstrings:
+      watch:
+      - docs
+      - bosonic_jax
+
+nav:
+  - About: index.md
+  - Code Reference: reference/
