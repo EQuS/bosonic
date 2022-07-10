@@ -91,7 +91,7 @@ def num(N) -> jnp.ndarray:
 
 def coherent(N, a) -> jnp.ndarray:
     # TODO: replace with JAX implementation
-    return qt2jax(qt.coherent(int(N), float(a)))
+    return qt2jax(qt.coherent(int(N), complex(a)))
 
 
 def identity(*args, **kwargs) -> jnp.ndarray:

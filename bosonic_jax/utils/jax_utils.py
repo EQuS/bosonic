@@ -9,7 +9,6 @@ from jax import lax
 from jax import device_put
 from jax.config import config
 from jax._src.scipy.special import gammaln
-from jax._src.numpy.lax_numpy import _constant_like
 import numpy as np
 
 config.update("jax_enable_x64", True)
@@ -39,7 +38,7 @@ def comb(N, k):
     Returns:
         NCk: N choose k
     """
-    one = _constant_like(N, 1)
+    one = 1
     N_plus_1 = lax.add(N, one)
     k_plus_1 = lax.add(k, one)
     return lax.exp(

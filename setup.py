@@ -12,7 +12,7 @@ REQUIREMENTS = [
     "qutip",
     "tqdm",
     "cython>=0.29.20",
-    "jax",
+    "jax[cpu]",
 ]
 
 EXTRA_REQUIREMENTS = {

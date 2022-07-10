@@ -356,6 +356,9 @@ class XGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
+    def get_H_func(self, t: float) -> jnp.ndarray:
+        return self.H[0]
+        
     def get_U(self) -> jnp.ndarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].x_U]
         U_tot = self.extend_gate(Us)
@@ -373,6 +376,9 @@ class YGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
+    def get_H_func(self, t: float) -> jnp.ndarray:
+        return self.H[0]
+
     def get_U(self) -> jnp.ndarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].y_U]
         U_tot = self.extend_gate(Us)
@@ -389,6 +395,9 @@ class ZGate(BosonicGate):
         Hs = [H]
         H_tot = self.extend_gate(Hs)
         return [H_tot]
+
+    def get_H_func(self, t: float) -> jnp.ndarray:
+        return self.H[0]
 
     def get_U(self) -> jnp.ndarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].z_U]

@@ -2,7 +2,7 @@
 Base simulator class
 """
 
-
+from copy import deepcopy
 from functools import partial
 from numbers import Number
 from typing import Optional, List
@@ -141,7 +141,7 @@ def hamiltonian_simulate(
     results = BosonicResults()
     for gate in bcirc.gates:
         t_list = gate.ts
-        H = gate.H_qt.copy()
+        H = deepcopy(gate.H_qt)
         args = gate.args
         if (
             H

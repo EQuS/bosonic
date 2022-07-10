@@ -22,18 +22,15 @@ from qutip.cy.math cimport erf, zerf
 from qutip.qobj import Qobj
 cdef double pi = 3.14159265358979323
 
-include '/Users/phionx/miniconda3/envs/bosonic-env/lib/python3.9/site-packages/qutip/cy/complex_math.pxi'
+include '/Users/phionx/miniconda3/envs/bosonic-jax-env/lib/python3.10/site-packages/qutip/cy/complex_math.pxi'
 
 cdef class CompiledStrCoeff(StrCoeff):
-    cdef object chi
+    cdef double omega_d
 
     def set_args(self, args):
-        self.chi=args['chi']
+        self.omega_d=args['omega_d']
 
     cdef void _call_core(self, double t, complex * coeff):
-        cdef object chi = self.chi
+        cdef double omega_d = self.omega_d
 
-        coeff[0] = exp(-1j * chi * t)
-        coeff[1] = exp(1j * chi * t)
-        coeff[2] = exp(1j * chi * t)
-        coeff[3] = exp(-1j * chi * t)
+        coeff[0] = cos(omega_d*t)

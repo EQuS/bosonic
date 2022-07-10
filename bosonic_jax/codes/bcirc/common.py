@@ -1,7 +1,7 @@
 """
 Common Gates
 """
-from typing import List
+from typing import List, Optional
 
 from bosonic_jax.codes.bcirc.base import BosonicGate
 import bosonic_jax.jax_qutip as jqt
@@ -16,6 +16,9 @@ class DelayGate(BosonicGate):
         Hs: List[jnp.ndarray] = []
         H_tot = self.extend_gate(Hs)
         return [H_tot]
+
+    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+        return self.H[0]
 
     def get_U(self) -> jnp.ndarray:
         Us: List[jnp.ndarray] = []
@@ -34,6 +37,9 @@ class DisplaceGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
+    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+        return self.H[0]
+
 
 class PhaseRotationGate(BosonicGate):
     label = "Phase Rotation"
@@ -45,3 +51,6 @@ class PhaseRotationGate(BosonicGate):
         Hs = [phi * N_a]
         H_tot = self.extend_gate(Hs)
         return [H_tot]
+
+    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+        return self.H[0]
