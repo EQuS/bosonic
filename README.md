@@ -13,7 +13,7 @@ We present `bosonic-jax` as a framework with which to simulate quantum circuits 
 
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `bosonic-jax` into your conda environment.*
 
-`bosonic-jax` will soon be published on PyPI. So, to install, simply run:
+<!-- `bosonic-jax` will soon be published on PyPI. So, to install, simply run:
 
 ```python
 pip install bosonic-jax
@@ -26,7 +26,7 @@ python3
 >>> import bosonic_jax as bcj
 ```
 
-If pip installation doesn't work, please build from source, as detailed below. 
+If pip installation doesn't work, please build from source, as detailed below.  -->
 
 #### Building from source
 
@@ -37,8 +37,10 @@ cd bosonic-jax
 pip install --upgrade .
 ```
 
-
 If you also want to download the dependencies needed to run optional tutorials, please use `pip install --upgrade .[dev]` or `pip install --upgrade '.[dev]'` (for `zsh` users).
+
+***Please Note:***
+For now, you will also have to manually install the `jaxquantum` dependency, to learn how to do so please visit: [https://github.com/EQuS/jaxquantum](https://github.com/EQuS/jaxquantum).
 
 #### Installation for Devs
 
@@ -52,6 +54,9 @@ Please use `pip install -e '.[dev]'` if you are a `zsh` user.
 
 
 Installing the package in the usual non-editable mode would require a developer to upgrade their pip installation (i.e. run `pip install --upgrade .`) every time they update the package source code.
+
+***Please Note:***
+For now, you will also have to manually install the `jaxquantum` dependency, to learn how to do so please visit: [https://github.com/EQuS/jaxquantum](https://github.com/EQuS/jaxquantum).
 
 #### Building documentation for Devs
 
