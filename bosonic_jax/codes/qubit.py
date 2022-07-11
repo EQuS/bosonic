@@ -6,7 +6,7 @@ from typing import Tuple
 import warnings
 
 from bosonic_jax.codes.base import BosonicQubit
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 from jax.config import config
 import jax.numpy as jnp

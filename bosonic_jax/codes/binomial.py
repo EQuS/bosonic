@@ -5,9 +5,9 @@ Cat Code Qubit
 from typing import Tuple
 
 
-from bosonic_jax.utils.jax_utils import comb
+from jaxquantum.utils.utils import comb
 from bosonic_jax.codes import BosonicQubit
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 from jax import jit, vmap
 from jax.config import config

@@ -8,9 +8,9 @@ from numbers import Number
 from typing import Optional, List
 import warnings
 
-from bosonic_jax.utils.jax_utils import is_1d
+from jaxquantum.utils.utils import is_1d
 from bosonic_jax.codes.bcirc import BosonicCircuit
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 
 from jax import jit, vmap
@@ -188,27 +188,18 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
 
 @partial(jit, static_argnums=(0, 5,))
 def hamiltonian_jax_step(
-    H_func,
+    H_func, # H_func stores gate dynamics
     p: jnp.ndarray,
     t_list: jnp.ndarray,
-    H0: jnp.ndarray,
+    H0: jnp.ndarray, # H0 represents the base system dynamics
     c_ops=None,
     use_density_matrix=False,
 ):
-    def f(rho, t, c_ops_val, H0_val):
-        H = H_func(t) + H0_val
+    @jit
+    def Ht(t):
+        return H_func(t) + H0
 
-        rho_dot = -1j * (H @ rho)
-
-        if use_density_matrix:
-            rho_dot += -1j * (-rho @ H)
-
-        for op in c_ops_val:
-            rho_dot += spre(op)(rho)
-        return rho_dot
-
-    return odeint(f, p, t_list, c_ops, H0)
-
+    return jqt.mesolve(p, t_list, c_ops=c_ops, Ht=Ht, use_density_matrix=use_density_matrix)
 
 @partial(jit, static_argnums=(2,))
 def unitary_jax_step(rho, U, use_density_matrix=False):

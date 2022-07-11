@@ -7,8 +7,8 @@ from abc import abstractmethod, ABCMeta
 from numbers import Number
 
 from bosonic_jax.codes.base import BosonicQubit
-from bosonic_jax.utils.jax_utils import is_1d, device_put_params
-import bosonic_jax.jax_qutip as jqt
+from jaxquantum.utils.utils import is_1d, device_put_params
+import jaxquantum as jqt
 
 from jax import device_put
 from jax.config import config

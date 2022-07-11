@@ -4,7 +4,7 @@ Common Gates
 from typing import List, Optional
 
 from bosonic_jax.codes.bcirc.base import BosonicGate
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 import jax.numpy as jnp
 

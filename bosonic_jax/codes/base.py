@@ -5,8 +5,8 @@ Base Bosonic Qubit Class
 from typing import Dict, Optional, Tuple
 from abc import abstractmethod, ABCMeta
 
-from bosonic_jax.utils.jax_utils import device_put_params, is_1d
-import bosonic_jax.jax_qutip as jqt
+from jaxquantum.utils.utils import device_put_params, is_1d
+import jaxquantum as jqt
 
 from jax.config import config
 import numpy as np

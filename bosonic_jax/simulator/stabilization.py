@@ -8,7 +8,7 @@ from typing import Optional, Dict
 
 from bosonic_jax.codes.bcirc import BosonicCircuit
 from bosonic_jax.simulator.base import execute
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 
 from jax import jit, vmap

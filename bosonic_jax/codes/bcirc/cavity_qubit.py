@@ -5,7 +5,7 @@ Gates specific to cavity qubit system.
 from typing import List
 
 from bosonic_jax.codes.bcirc.base import BosonicGate
-import bosonic_jax.jax_qutip as jqt
+import jaxquantum as jqt
 
 import jax.numpy as jnp
 import jax.scipy as jsp
