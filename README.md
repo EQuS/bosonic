@@ -65,6 +65,8 @@ Set yourself up to use the `[dev]` dependencies. Then, from the command line run
 mkdocs serve
 ```
 
+Then, go to: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to view the documentation.
+
 #### Updating and deploying documentation for Devs
 
 Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
