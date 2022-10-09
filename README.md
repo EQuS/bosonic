@@ -58,7 +58,14 @@ Installing the package in the usual non-editable mode would require a developer 
 ***Please Note:***
 For now, you will also have to manually install the `jaxquantum` dependency, to learn how to do so please visit: [https://github.com/EQuS/jaxquantum](https://github.com/EQuS/jaxquantum).
 
-#### Building documentation for Devs
+#### Viewing documentation locally
+
+Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
+```bash
+mkdocs serve
+```
+
+#### Updating and deploying documentation for Devs
 
 Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
 ```bash

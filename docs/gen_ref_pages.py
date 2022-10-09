@@ -6,7 +6,7 @@ import mkdocs_gen_files
 
 nav = mkdocs_gen_files.Nav()
 
-PACKAGE_NAME = "bosonic_jax"  # TODO : update with your package name
+PACKAGE_NAME = "bosonic_jax"
 
 for path in sorted(Path(PACKAGE_NAME).rglob("*.py")):
     module_path = path.relative_to(".").with_suffix("")
