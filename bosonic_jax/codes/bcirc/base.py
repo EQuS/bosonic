@@ -2,7 +2,7 @@
 Bosonic Quantum Circuit
 """
 
-from typing import List, Tuple, Union, Type, cast, Dict, Optional, Any
+from typing import List, Tuple, Union, Type, cast, Dict, Optional, Any, Callable
 from abc import abstractmethod, ABCMeta
 from numbers import Number
 
@@ -24,7 +24,8 @@ class BosonicRegister:
     """
 
     def __init__(
-        self, bqubits: List[BosonicQubit],
+        self,
+        bqubits: List[BosonicQubit],
     ):
         """
         Bosonic Register Init Method
@@ -163,10 +164,10 @@ class BosonicCircuit:
         state = self.jax2qt(state)
 
         if bqubit_indx is not None:
-            self.breg[bqubit_indx].plot(state.ptrace(bqubit_indx))
+            self.breg[bqubit_indx].plot(state.ptrace(bqubit_indx))  # type: ignore
         else:
             for j in range(len(self.breg)):
-                self.breg[j].plot(state.ptrace(j))
+                self.breg[j].plot(state.ptrace(j))  # type: ignore
 
 
 def extend_op_to_circ(Ms: Dict[int, jnp.ndarray], bcirc: BosonicCircuit):
@@ -232,7 +233,7 @@ class BosonicGate(metaclass=ABCMeta):
 
         Args:
             t (float): time
-        
+
         Returns:
             jnp.ndarray
         """
@@ -310,7 +311,12 @@ class BosonicGate(metaclass=ABCMeta):
 
     @abstractmethod
     def get_H(self) -> Optional[List]:
-        pass
+        """QuTiP cython-backend compatible Hamiltonian list.
+
+        Returns:
+            List of hamiltonians, used for simulation.
+                E.g. [sigmaz, [sigmax, "cos(t)"]]
+        """
 
     def _get_U_from_H(self) -> Optional[jnp.ndarray]:
         H = self.H
@@ -339,6 +345,31 @@ class BosonicGate(metaclass=ABCMeta):
         M_tot = extend_op_to_circ(Ms_dict, self.bcirc)
         return M_tot
 
+def gen_custom_gate(
+    Hs_func: Optional[Callable] = None,
+    Us: Optional[List[jnp.ndarray]] = None,
+):
+    class CustomGate(BosonicGate):
+        """CustomGate."""
+
+        label = "Custom"
+
+        def get_H(self) -> Optional[List]:
+            # TODO: implement this
+            return [0]
+
+        def get_H_func(self, t: float) -> jnp.ndarray:
+            if Hs_func is None:
+                raise NotImplementedError("Hs_func was not provided upon initialization.")
+            return self.extend_gate(Hs_func(t))
+
+        def get_U(self) -> jnp.ndarray:
+            if Us is None:
+                raise NotImplementedError("Us was not provided upon initialization.")
+            U_tot = self.extend_gate(Us)
+            return U_tot
+    return CustomGate
+
 
 # Explicitly Referenced Gates
 # ============================================================
@@ -358,7 +389,7 @@ class XGate(BosonicGate):
 
     def get_H_func(self, t: float) -> jnp.ndarray:
         return self.H[0]
-        
+
     def get_U(self) -> jnp.ndarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].x_U]
         U_tot = self.extend_gate(Us)
