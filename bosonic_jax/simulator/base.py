@@ -55,8 +55,8 @@ class BosonicResults:
 
     def calc_expect(self, op: jnp.ndarray, op_name: str):
         """
-        TODO (if needed): 
-        This only works for jax simulations. 
+        TODO (if needed):
+        This only works for jax simulations.
         We may want to extend it to accomodate QuTiP mesolve sims.
         """
 
@@ -186,12 +186,18 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     return results
 
 
-@partial(jit, static_argnums=(0, 5,))
+@partial(
+    jit,
+    static_argnums=(
+        0,
+        5,
+    ),
+)
 def hamiltonian_jax_step(
-    H_func, # H_func stores gate dynamics
+    H_func,  # H_func stores gate dynamics
     p: jnp.ndarray,
     t_list: jnp.ndarray,
-    H0: jnp.ndarray, # H0 represents the base system dynamics
+    H0: jnp.ndarray,  # H0 represents the base system dynamics
     c_ops=None,
     use_density_matrix=False,
 ):
@@ -199,7 +205,11 @@ def hamiltonian_jax_step(
     def Ht(t):
         return H_func(t) + H0
 
-    return jqt.mesolve(p, t_list, c_ops=c_ops, Ht=Ht, use_density_matrix=use_density_matrix)
+    if use_density_matrix:
+        return jqt.mesolve(p, t_list, c_ops=c_ops, Ht=Ht)
+    else:
+        return jqt.sesolve(p, t_list, Ht=Ht)
+
 
 @partial(jit, static_argnums=(2,))
 def unitary_jax_step(rho, U, use_density_matrix=False):
@@ -219,10 +229,10 @@ def hamiltonian_jax_simulate(
     results_in: Optional[BosonicResults] = None,
 ):
     """
-    
+
     Args:
         H0 (jnp.ndarray):
-            base system hamiltonian, 
+            base system hamiltonian,
             please make sure this a jnp.array not a QuTiP Qobj
     """
     # p0 is a density matrix, but can also be wavefunction if c_ops=None
@@ -263,4 +273,3 @@ def hamiltonian_jax_simulate(
             warnings.warn(f"{gate} Gate was skipped.", RuntimeWarning, stacklevel=2)
 
     return results
-
