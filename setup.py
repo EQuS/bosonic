@@ -21,12 +21,11 @@ EXTRA_REQUIREMENTS = {
         "mypy",
         "pylint",
         "black",
-        "mkdocs",
-        "mkdocs-material",
-        "mkdocs-gen-files",
-        "mkdocs-literate-nav",
-        "mkdocs-section-index",
-        "mkdocstrings-python",
+        "sphinx",
+        "sphinx-book-theme",
+        "sphinxcontrib-napoleon",
+        "Jinja2<3.1",  # https://github.com/readthedocs/readthedocs.org/issues/9038
+        "myst-nb",
     ],
 }
 
