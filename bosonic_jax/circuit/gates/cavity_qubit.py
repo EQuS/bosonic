@@ -4,7 +4,7 @@ Gates specific to cavity qubit system.
 
 from typing import List
 
-from bosonic_jax.codes.bcirc.base import BosonicGate
+from bosonic_jax.circuit.base import BosonicGate
 import jaxquantum as jqt
 
 import jax.numpy as jnp
@@ -127,7 +127,7 @@ class NumSplitCDGate(BosonicGate):
 
         Args:
             t (float): time
-        
+
         Returns:
             jnp.ndarray
         """

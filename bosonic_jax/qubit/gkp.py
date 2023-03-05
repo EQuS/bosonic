@@ -4,7 +4,7 @@ Cat Code Qubit
 
 from typing import Tuple
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic_jax.qubit.base import BosonicQubit
 import jaxquantum as jqt
 
 import jax.numpy as jnp
@@ -87,13 +87,13 @@ class GKPQubit(BosonicQubit):
             Then, we know that E|λ₀⟩ = |λ⟩ is the groundstate of H.
             pf. H|λ⟩ = (E H_0 E⁻¹)(E|λ₀⟩) = E H_0 |λ₀⟩ = λ₀ (E|λ₀⟩) = λ₀|λ⟩
 
-        TODO (if necessary): 
+        TODO (if necessary):
             Alternatively, we could construct a hamiltonian using
             finite energy stabilizers S_x, S_y, S_z, Z_s. However,
             this would make H = - S_x - S_y - S_z - Z_s non-hermitian.
             Currently, JAX does not support derivatives of jnp.linalg.eig,
             while it does support derivatives of jnp.linalg.eigh.
-            Discussion: https://github.com/google/jax/issues/2748 
+            Discussion: https://github.com/google/jax/issues/2748
         """
 
         # step 1: use ideal GKP stabilizers to find ideal GKP |+z> state

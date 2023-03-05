@@ -9,7 +9,7 @@ from typing import Optional, List
 import warnings
 
 from jaxquantum.utils.utils import is_1d
-from bosonic_jax.codes.bcirc import BosonicCircuit
+from bosonic_jax.circuit.base import BosonicCircuit
 import jaxquantum as jqt
 
 

@@ -6,7 +6,7 @@ TODO: convert to JAX
 from functools import partial
 from typing import Optional, Dict
 
-from bosonic_jax.codes.bcirc import BosonicCircuit
+from bosonic_jax.circuit.base import BosonicCircuit
 from bosonic_jax.simulator.base import execute
 import jaxquantum as jqt
 
@@ -47,8 +47,8 @@ def sBs_stabilize(
 
     Returns:
         meas_results: Array of expectation values with dimension len(meas_ops) x len(N_rounds)
-    
-    Note: Here we assume that the GKP Qubit being stabilized has idx 0. 
+
+    Note: Here we assume that the GKP Qubit being stabilized has idx 0.
     This allows us to use rho.ptrace(0) to extract just the GKP state.
     """
 
@@ -99,7 +99,13 @@ def sBs_stabilize(
     return meas_results
 
 
-@partial(jit, static_argnums=(1, 3,))
+@partial(
+    jit,
+    static_argnums=(
+        1,
+        3,
+    ),
+)
 def sBs_stabilize_meas(
     rho: jnp.ndarray,
     trace_dims: tuple,
@@ -128,7 +134,15 @@ def sBs_stabilize_meas(
         return vmap(projective_measure)(meas_ops)
 
 
-@partial(jit, static_argnums=(0, 1, 2, 3,))
+@partial(
+    jit,
+    static_argnums=(
+        0,
+        1,
+        2,
+        3,
+    ),
+)
 def sBs_stabilize_circ(
     bcirc_x: BosonicCircuit,
     bcirc_p: BosonicCircuit,

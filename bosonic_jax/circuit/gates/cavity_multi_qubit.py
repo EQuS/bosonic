@@ -4,7 +4,7 @@ Gates specific to cavity coupled to multiple ancilla system.
 
 from typing import List, Optional
 
-from bosonic_jax.codes.bcirc.base import BosonicGate
+from bosonic_jax.circuit.base import BosonicGate
 import jaxquantum as jqt
 
 import jax.numpy as jnp

@@ -5,7 +5,7 @@ Qubit
 from typing import Tuple
 import warnings
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic_jax.qubit.base import BosonicQubit
 import jaxquantum as jqt
 
 from jax.config import config
@@ -57,4 +57,3 @@ class Qubit(BosonicQubit):
             b.show()
             plt.tight_layout()
             plt.show()
-

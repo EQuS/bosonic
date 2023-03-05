@@ -6,7 +6,7 @@ from typing import List, Tuple, Union, Type, cast, Dict, Optional, Any, Callable
 from abc import abstractmethod, ABCMeta
 from numbers import Number
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic_jax.qubit.base import BosonicQubit
 from jaxquantum.utils.utils import is_1d, device_put_params
 import jaxquantum as jqt
 
@@ -345,6 +345,7 @@ class BosonicGate(metaclass=ABCMeta):
         M_tot = extend_op_to_circ(Ms_dict, self.bcirc)
         return M_tot
 
+
 def gen_custom_gate(
     Hs_func: Optional[Callable] = None,
     Us: Optional[List[jnp.ndarray]] = None,
@@ -360,7 +361,9 @@ def gen_custom_gate(
 
         def get_H_func(self, t: float) -> jnp.ndarray:
             if Hs_func is None:
-                raise NotImplementedError("Hs_func was not provided upon initialization.")
+                raise NotImplementedError(
+                    "Hs_func was not provided upon initialization."
+                )
             return self.extend_gate(Hs_func(t))
 
         def get_U(self) -> jnp.ndarray:
@@ -368,6 +371,7 @@ def gen_custom_gate(
                 raise NotImplementedError("Us was not provided upon initialization.")
             U_tot = self.extend_gate(Us)
             return U_tot
+
     return CustomGate
 
 

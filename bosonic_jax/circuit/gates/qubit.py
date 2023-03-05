@@ -4,10 +4,12 @@ from typing import List, Optional
 
 import jax.numpy as jnp
 
-from bosonic_jax.codes.bcirc.base import BosonicGate
+from bosonic_jax.circuit.base import BosonicGate
+
 
 class HGate(BosonicGate):
-    """ HGate."""
+    """HGate."""
+
     label = "H"
 
     def get_H(self) -> Optional[List]:
@@ -21,4 +23,3 @@ class HGate(BosonicGate):
         Us = [jnp.array([[1, 1], [1, -1]]) / jnp.sqrt(2)]
         U_tot = self.extend_gate(Us)
         return U_tot
-
