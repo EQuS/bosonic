@@ -2,7 +2,9 @@
 Bosonic Codes
 """
 import os
+
 from .codes import *
+from .circuit import *
 from .simulator import *
 
 with open(

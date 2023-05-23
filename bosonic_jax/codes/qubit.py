@@ -57,4 +57,3 @@ class Qubit(BosonicQubit):
             b.show()
             plt.tight_layout()
             plt.show()
-

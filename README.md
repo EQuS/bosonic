@@ -13,7 +13,9 @@ We present `bosonic-jax` as a framework with which to simulate quantum circuits 
 
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `bosonic-jax` into your conda environment.*
 
-<!-- `bosonic-jax` will soon be published on PyPI. So, to install, simply run:
+#### Install from PyPI
+
+`bosonic-jax` will soon be published on PyPI. So, to install, simply run:
 
 ```python
 pip install bosonic-jax
@@ -26,9 +28,9 @@ python3
 >>> import bosonic_jax as bcj
 ```
 
-If pip installation doesn't work, please build from source, as detailed below.  -->
+If pip installation doesn't work, please build from source, as detailed below. 
 
-#### Building from source
+#### Build from source
 
 To build `bosonic-jax` from source, pip install using:
 ```
@@ -40,7 +42,7 @@ pip install --upgrade .
 If you also want to download the dependencies needed to run optional tutorials, please use `pip install --upgrade .[dev]` or `pip install --upgrade '.[dev]'` (for `zsh` users).
 
 ***Please Note:***
-For now, you will also have to manually install the `jaxquantum` dependency, to learn how to do so please visit: [https://github.com/EQuS/jaxquantum](https://github.com/EQuS/jaxquantum).
+For now, you will also have to manually install the `bosonic_jax` dependency, to learn how to do so please visit: [https://github.com/EQuS/bosonic-jax](https://github.com/EQuS/bosonic-jax).
 
 #### Installation for Devs
 
@@ -56,28 +58,31 @@ Please use `pip install -e '.[dev]'` if you are a `zsh` user.
 Installing the package in the usual non-editable mode would require a developer to upgrade their pip installation (i.e. run `pip install --upgrade .`) every time they update the package source code.
 
 ***Please Note:***
-For now, you will also have to manually install the `jaxquantum` dependency, to learn how to do so please visit: [https://github.com/EQuS/jaxquantum](https://github.com/EQuS/jaxquantum).
+For now, you will also have to manually install the `bosonic_jax` dependency, to learn how to do so please visit: [https://github.com/EQuS/bosonic-jax](https://github.com/EQuS/bosonic-jax).
 
-#### Viewing documentation locally
 
-Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
-```bash
-mkdocs serve
+## Documentation
+
+Documentation should be viewable here: [https://github.com/pages/EQuS/bosonic-jax/](https://github.com/pages/EQuS/bosonic-jax/) 
+
+#### View locally
+
+
+To view documentation locally, please open `docs/build/html/index.html` in your browser.
+
+
+#### Build documentation 
+
+To rebuild documentation, please start in the root folder and run:
+
+```sh
+cd docs
+make clean
+make html
 ```
 
-Then, go to: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to view the documentation.
+*You may also have to delete the `docs/source/_autosummary` directory before running the above commands.*
 
-#### Updating and deploying documentation for Devs
-
-Set yourself up to use the `[dev]` dependencies. Then, from the command line run:
-```bash
-mkdocs build
-```
-
-Then, when you're ready to deploy, run:
-```bash
-mkdocs gh-deploy
-```
 ## Codebase
 
 The codebase is split across `bosonic_jax/codes` and `bosonic_jax/simulator`, which respectively provide tooling for several bosonic QEC codes (e.g. cat, binomial, GKP codes) and simulators with which to benchmark circuits built using these code qubits.
