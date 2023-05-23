@@ -13,7 +13,9 @@ We present `bosonic-jax` as a framework with which to simulate quantum circuits 
 
 *Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `bosonic-jax` into your conda environment.*
 
-<!-- `bosonic-jax` will soon be published on PyPI. So, to install, simply run:
+#### Install from PyPI
+
+`bosonic-jax` will soon be published on PyPI. So, to install, simply run:
 
 ```python
 pip install bosonic-jax
@@ -26,9 +28,9 @@ python3
 >>> import bosonic_jax as bcj
 ```
 
-If pip installation doesn't work, please build from source, as detailed below.  -->
+If pip installation doesn't work, please build from source, as detailed below. 
 
-#### Building from source
+#### Build from source
 
 To build `bosonic-jax` from source, pip install using:
 ```

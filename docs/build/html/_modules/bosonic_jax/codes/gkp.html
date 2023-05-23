@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bosonic_jax.codes.gkp &#8212; graph-based pulse design</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/bosonic_jax/codes/gkp';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorials/1-demo/index.html">1-demo</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api.html">API reference</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/bosonic_jax.html">bosonic_jax</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/bosonic_jax.circuit.html">bosonic_jax.circuit</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.circuit.base.html">bosonic_jax.circuit.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.circuit.gates.html">bosonic_jax.circuit.gates</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.html">bosonic_jax.codes</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.base.html">bosonic_jax.codes.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.binomial.html">bosonic_jax.codes.binomial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.cat.html">bosonic_jax.codes.cat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.gkp.html">bosonic_jax.codes.gkp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.codes.qubit.html">bosonic_jax.codes.qubit</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/bosonic_jax.simulator.html">bosonic_jax.simulator</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/bosonic_jax.simulator.base.html">bosonic_jax.simulator.base</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/EQuS/bosonic-jax" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for bosonic_jax.codes.gkp</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cat Code Qubit</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">bosonic_jax.codes.base</span> <span class="kn">import</span> <span class="n">BosonicQubit</span>
+<span class="kn">import</span> <span class="nn">jaxquantum</span> <span class="k">as</span> <span class="nn">jqt</span>
+
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax.scipy</span> <span class="k">as</span> <span class="nn">jsp</span>
+
+
+<div class="viewcode-block" id="GKPQubit"><a class="viewcode-back" href="../../../_autosummary/bosonic_jax.codes.gkp.GKPQubit.html#bosonic_jax.codes.gkp.GKPQubit">[docs]</a><span class="k">class</span> <span class="nc">GKPQubit</span><span class="p">(</span><span class="n">BosonicQubit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    GKP Qubit Class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_params_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_params_validation</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s2">&quot;delta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">s_delta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;epsilon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_delta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_gen_common_gates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overriding this method to add additional common gates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_gen_common_gates</span><span class="p">()</span>
+
+        <span class="c1"># phase space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a_dag&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a_dag&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># finite energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a_dag&quot;</span><span class="p">]</span>
+            <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;E_inv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a_dag&quot;</span><span class="p">]</span>
+            <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># axis</span>
+        <span class="n">x_axis</span><span class="p">,</span> <span class="n">z_axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_axis</span><span class="p">()</span>
+        <span class="n">y_axis</span> <span class="o">=</span> <span class="n">x_axis</span> <span class="o">+</span> <span class="n">z_axis</span>
+
+        <span class="c1"># gates</span>
+        <span class="n">X_0</span> <span class="o">=</span> <span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">z_axis</span><span class="p">)</span>
+        <span class="n">Z_0</span> <span class="o">=</span> <span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x_axis</span><span class="p">)</span>
+        <span class="n">Y_0</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">X_0</span> <span class="o">@</span> <span class="n">Z_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_op_finite_energy</span><span class="p">(</span><span class="n">X_0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_op_finite_energy</span><span class="p">(</span><span class="n">Z_0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_op_finite_energy</span><span class="p">(</span><span class="n">Y_0</span><span class="p">)</span>
+
+        <span class="c1"># symmetric stabilizers and gates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Z_s_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symmetrized_expm</span><span class="p">(</span>
+            <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x_axis</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_x_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symmetrized_expm</span><span class="p">(</span>
+            <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_axis</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_z_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symmetrized_expm</span><span class="p">(</span>
+            <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_axis</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_y_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symmetrized_expm</span><span class="p">(</span>
+            <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_axis</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_basis_z</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct basis states |+-x&gt;, |+-y&gt;, |+-z&gt;.</span>
+<span class="sd">        step 1: use ideal GKP stabilizers to find ideal GKP |+z&gt; state</span>
+<span class="sd">        step 2: make ideal eigenvector finite energy</span>
+<span class="sd">            We want the groundstate of H = E H_0 E⁻¹.</span>
+<span class="sd">            So, we can begin by find the groundstate of H_0 -&gt; |λ₀⟩</span>
+<span class="sd">            Then, we know that E|λ₀⟩ = |λ⟩ is the groundstate of H.</span>
+<span class="sd">            pf. H|λ⟩ = (E H_0 E⁻¹)(E|λ₀⟩) = E H_0 |λ₀⟩ = λ₀ (E|λ₀⟩) = λ₀|λ⟩</span>
+
+<span class="sd">        TODO (if necessary):</span>
+<span class="sd">            Alternatively, we could construct a hamiltonian using</span>
+<span class="sd">            finite energy stabilizers S_x, S_y, S_z, Z_s. However,</span>
+<span class="sd">            this would make H = - S_x - S_y - S_z - Z_s non-hermitian.</span>
+<span class="sd">            Currently, JAX does not support derivatives of jnp.linalg.eig,</span>
+<span class="sd">            while it does support derivatives of jnp.linalg.eigh.</span>
+<span class="sd">            Discussion: https://github.com/google/jax/issues/2748</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># step 1: use ideal GKP stabilizers to find ideal GKP |+z&gt; state</span>
+        <span class="n">H_0</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_x_0&quot;</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_y_0&quot;</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;S_z_0&quot;</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Z_s_0&quot;</span><span class="p">]</span>  <span class="c1"># bosonic |+z&gt; state</span>
+        <span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">H_0</span><span class="p">)</span>
+        <span class="n">gstate_ideal</span> <span class="o">=</span> <span class="n">vecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># step 2: make ideal eigenvector finite energy</span>
+        <span class="n">gstate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">gstate_ideal</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span>
+        <span class="n">plus_z</span> <span class="o">=</span> <span class="n">jqt</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="n">gstate</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">minus_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">plus_z</span>
+        <span class="k">return</span> <span class="n">plus_z</span><span class="p">,</span> <span class="n">minus_z</span>
+
+    <span class="c1"># utils</span>
+    <span class="c1"># ======================================================</span>
+    <span class="k">def</span> <span class="nf">_get_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">z_axis</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">z_axis</span>
+
+    <span class="k">def</span> <span class="nf">_make_op_finite_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">op</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;E_inv&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_symmetrized_expm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="n">op</span><span class="p">)</span> <span class="o">+</span> <span class="n">jsp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">op</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="c1"># gates</span>
+    <span class="c1"># ======================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_U</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_U</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z_U</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="RectangularGKPQubit"><a class="viewcode-back" href="../../../_autosummary/bosonic_jax.codes.gkp.RectangularGKPQubit.html#bosonic_jax.codes.gkp.RectangularGKPQubit">[docs]</a><span class="k">class</span> <span class="nc">RectangularGKPQubit</span><span class="p">(</span><span class="n">GKPQubit</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_params_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_params_validation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;a&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="k">def</span> <span class="nf">_get_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+        <span class="n">z_axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">z_axis</span></div>
+
+
+<div class="viewcode-block" id="SquareGKPQubit"><a class="viewcode-back" href="../../../_autosummary/bosonic_jax.codes.gkp.SquareGKPQubit.html#bosonic_jax.codes.gkp.SquareGKPQubit">[docs]</a><span class="k">class</span> <span class="nc">SquareGKPQubit</span><span class="p">(</span><span class="n">GKPQubit</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_params_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_params_validation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span></div>
+
+
+<div class="viewcode-block" id="HexagonalGKPQubit"><a class="viewcode-back" href="../../../_autosummary/bosonic_jax.codes.gkp.HexagonalGKPQubit.html#bosonic_jax.codes.gkp.HexagonalGKPQubit">[docs]</a><span class="k">class</span> <span class="nc">HexagonalGKPQubit</span><span class="p">(</span><span class="n">GKPQubit</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">z_axis</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">common_gates</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">z_axis</span></div>
+
+
+<span class="c1">## Citations</span>
+
+<span class="c1"># Stabilization of Finite-Energy Gottesman-Kitaev-Preskill States</span>
+<span class="c1"># Baptiste Royer, Shraddha Singh, and S. M. Girvin</span>
+<span class="c1"># Phys. Rev. Lett. 125, 260509 – Published 31 December 2020</span>
+
+<span class="c1"># Quantum error correction of a qubit encoded in grid states of an oscillator.</span>
+<span class="c1"># Campagne-Ibarcq, P., Eickbusch, A., Touzard, S. et al.</span>
+<span class="c1"># Nature 584, 368–372 (2020).</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Shantanu Jha
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022, EQuS.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -6,7 +6,7 @@ from typing import List, Tuple, Union, Type, cast, Dict, Optional, Any, Callable
 from abc import abstractmethod, ABCMeta
 from numbers import Number
 
-from bosonic_jax.qubit.base import BosonicQubit
+from bosonic_jax.codes.base import BosonicQubit
 from jaxquantum.utils.utils import is_1d, device_put_params
 import jaxquantum as jqt
 
@@ -253,14 +253,12 @@ class BosonicGate(metaclass=ABCMeta):
         Allows the storage of H calculations. If use_unitary, then we forgo Hamiltonian simulation.
 
         Returns:
-            self._H (list):
-                first element is always a jnp.ndarray or 0
-                other elements are lists of the form [jnp.ndarray, str]
-                E.g.
-                    [sigmaz, [sigmax, "cos(t)"]]
-                    [0, [sigmax, "cos(t)"]]
-                    [sigmaz]
-                    [0]
+            self._H (list): first element is always a jnp.ndarray or 0
+            other elements are lists of the form [jnp.ndarray, str]
+            E.g. [sigmaz, [sigmax, "cos(t)"]]
+            [0, [sigmax, "cos(t)"]]
+            [sigmaz]
+            [0]
         """
         if self.use_unitary:
             return None

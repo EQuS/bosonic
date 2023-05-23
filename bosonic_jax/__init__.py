@@ -3,7 +3,7 @@ Bosonic Codes
 """
 import os
 
-from .qubit import *
+from .codes import *
 from .circuit import *
 from .simulator import *
 
