@@ -220,8 +220,8 @@ class BosonicGate(metaclass=ABCMeta):
         self.use_unitary = use_unitary
 
         # pre-load gates
-        self.H
-        self.U
+        # self.H
+        # self.U
 
     def __str__(self) -> str:
         return self.label
