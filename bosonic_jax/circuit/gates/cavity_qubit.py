@@ -76,10 +76,11 @@ class QubitRotationGate(BosonicGate):
             a = jnp.array(self.params["rot_axis"])
             norm = jnp.linalg.norm(a)
 
-            if a.size != 3 or norm == 0.0:
-                raise ValueError(
-                    "Please use a nonzero Bloch vector of the form a = [ax, ay, az] ≠ [0,0,0]."
-                )
+            # if a.size != 3 or norm == 0.0:
+            #     raise ValueError(
+            #         "Please use a nonzero Bloch vector of the form a = [ax, ay, az] ≠ [0,0,0]."
+            #     )
+
             a = (1 / norm) * a
             sigma_tot = a[0] * jqt.sigmax() + a[1] * jqt.sigmay() + a[2] * jqt.sigmaz()
 
