@@ -180,7 +180,8 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     use_density_matrix = not is_1d(p)
     results = BosonicResults()
     for gate in bcirc.gates:
-        U = jqt.qt2jax(gate.U)
+        U = gate.U
+        # U = jqt.qt2jax(U) # TODO: check if necessary
         p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
         results.append([p])
     return results
