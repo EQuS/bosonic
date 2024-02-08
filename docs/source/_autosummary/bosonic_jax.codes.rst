@@ -30,5 +30,6 @@ bosonic\_jax.codes
    bosonic_jax.codes.binomial
    bosonic_jax.codes.cat
    bosonic_jax.codes.gkp
+   bosonic_jax.codes.mode
    bosonic_jax.codes.qubit
 

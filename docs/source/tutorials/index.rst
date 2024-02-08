@@ -4,4 +4,8 @@ Tutorials
 .. toctree::
    :maxdepth: 2
 
-   1-demo/index
+   binomial/index
+   fock/index
+   cat/index
+   gkp/index
+   circ/index
