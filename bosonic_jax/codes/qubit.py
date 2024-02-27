@@ -8,7 +8,7 @@ import warnings
 from bosonic_jax.codes.base import BosonicQubit
 import jaxquantum as jqt
 
-from jax.config import config
+from jax import config
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import qutip as qt

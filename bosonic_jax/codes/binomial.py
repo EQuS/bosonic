@@ -10,7 +10,7 @@ from bosonic_jax.codes import BosonicQubit
 import jaxquantum as jqt
 
 from jax import jit, vmap
-from jax.config import config
+from jax import config
 import jax.numpy as jnp
 
 config.update("jax_enable_x64", True)

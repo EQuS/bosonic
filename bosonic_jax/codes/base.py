@@ -8,7 +8,7 @@ from abc import abstractmethod, ABCMeta
 from jaxquantum.utils.utils import device_put_params, is_1d
 import jaxquantum as jqt
 
-from jax.config import config
+from jax import config
 import numpy as np
 import jax.numpy as jnp
 import jax.scipy as jsp

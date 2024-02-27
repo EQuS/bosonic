@@ -7,7 +7,7 @@ from typing import Tuple
 from bosonic_jax.codes.base import BosonicQubit
 import jaxquantum as jqt
 
-from jax.config import config
+from jax import config
 import jax.numpy as jnp
 
 config.update("jax_enable_x64", True)

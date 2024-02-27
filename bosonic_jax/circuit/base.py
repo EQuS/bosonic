@@ -11,7 +11,7 @@ from jaxquantum.utils.utils import is_1d, device_put_params
 import jaxquantum as jqt
 
 from jax import device_put
-from jax.config import config
+from jax import config
 import jax.numpy as jnp
 import jax.scipy as jsp
 

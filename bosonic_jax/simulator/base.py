@@ -16,7 +16,7 @@ import jaxquantum as jqt
 from jax import jit, vmap
 from jax.experimental.ode import odeint
 from jax import tree_util
-from jax.config import config
+from jax import config
 import qutip as qt
 import jax.numpy as jnp
 
