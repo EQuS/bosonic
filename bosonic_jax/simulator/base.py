@@ -238,11 +238,12 @@ def hamiltonian_jax_simulate(
     """
     # p0 is a density matrix, but can also be wavefunction if c_ops=None
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
-    c_ops = c_ops if c_ops is not None else []
+    c_ops = c_ops if c_ops is not None else jnp.array([])
+    c_ops = jnp.array(c_ops)
 
     p = jqt.qt2jax(p)
 
-    if c_ops != [] and is_1d(p):
+    if len(c_ops) > 0 and is_1d(p):
         # if simulating with noise and p is a vector,
         # then turn p into a density matrix
         p = p @ jnp.conj(p).T

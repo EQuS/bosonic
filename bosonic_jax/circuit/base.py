@@ -53,9 +53,6 @@ class BosonicCircuit:
 
     def __init__(self, breg: BosonicRegister):
         self.breg = breg
-        self._dims = None
-        self._dm_dims = None
-        self._default_initial_state = None
         self.reset_gates()
 
     def get_dims(self):
@@ -68,21 +65,15 @@ class BosonicCircuit:
 
     @property
     def dims(self):
-        if self._dims is None:
-            self._dims = self.get_dims()
-        return self._dims
+        return self.get_dims()
 
     @property
     def dm_dims(self):
-        if self._dm_dims is None:
-            self._dm_dims = jnp.array([self.dims[0], self.dims[0]])
-        return self._dm_dims
+        return jnp.array([self.dims[0], self.dims[0]])
 
     @property
     def default_initial_state(self):
-        if self._default_initial_state is None:
-            self._default_initial_state = self.gen_default_initial_state()
-        return self._default_initial_state
+        return self.gen_default_initial_state()
 
     def gen_default_initial_state(self) -> jnp.ndarray:
         state = None
@@ -213,10 +204,6 @@ class BosonicGate(metaclass=ABCMeta):
         self.args: Dict[str, complex] = {}  # used for cython qutip mesolve
         self.bcirc = bcirc
         self.bqubit_indxs = bqubit_indxs
-        self._H = None
-        self._H_qt = None
-        self._U = None
-        self._U_qt = None
         self.use_unitary = use_unitary
 
         # pre-load gates
@@ -253,7 +240,7 @@ class BosonicGate(metaclass=ABCMeta):
         Allows the storage of H calculations. If use_unitary, then we forgo Hamiltonian simulation.
 
         Returns:
-            self._H (list): first element is always a jnp.ndarray or 0
+            H (list): first element is always a jnp.ndarray or 0
             other elements are lists of the form [jnp.ndarray, str]
             E.g. [sigmaz, [sigmax, "cos(t)"]]
             [0, [sigmax, "cos(t)"]]
@@ -262,42 +249,34 @@ class BosonicGate(metaclass=ABCMeta):
         """
         if self.use_unitary:
             return None
-
-        if self._H is None:
-            self._H = self.get_H()
-        return self._H
+        
+        return self.get_H()
 
     @property
     def H_qt(self):
         if self.use_unitary:
             return None
 
-        if self._H_qt is None:
-            H = self.H
-            if H is None:
-                return None
-            H_qt = [
-                0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jax2qt(H[0])
-            ]
-            for i in range(1, len(H)):
-                H_qt.append([self.bcirc.jax2qt(H[i][0]), H[i][1]])
-            self._H_qt = H_qt
-        return self._H_qt
+        H = self.H
+        if H is None:
+            return None
+        H_qt = [
+            0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jax2qt(H[0])
+        ]
+        for i in range(1, len(H)):
+            H_qt.append([self.bcirc.jax2qt(H[i][0]), H[i][1]])
+        return H_qt
 
     @property
     def U(self):
         """
         Allows the storage of U calculations.
         """
-        if self._U is None:
-            self._U = self.get_U()
-        return self._U
+        return self.get_U()
 
     @property
     def U_qt(self):
-        if self._U_qt is None:
-            self._U_qt = self.bcirc.jax2qt(self.U)
-        return self._U_qt
+        return self.bcirc.jax2qt(self.U)
 
     @property
     @abstractmethod
