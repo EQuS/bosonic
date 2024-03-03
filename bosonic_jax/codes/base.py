@@ -5,7 +5,7 @@ Base Bosonic Qubit Class
 from typing import Dict, Optional, Tuple
 from abc import abstractmethod, ABCMeta
 
-from jaxquantum.utils.utils import device_put_params, is_1d
+from jaxquantum.utils.utils import device_put_params
 import jaxquantum as jqt
 
 from jax import config
@@ -174,8 +174,8 @@ class BosonicQubit(metaclass=ABCMeta):
             return jsp.linalg.expm(1.0j * H)
 
         gate = (
-            self.basis["+" + basis_state] @ jnp.conj(self.basis["+" + basis_state]).T
-            - self.basis["-" + basis_state] @ jnp.conj(self.basis["-" + basis_state]).T
+            self.basis["+" + basis_state] @ self.basis["+" + basis_state].dag()
+            - self.basis["-" + basis_state] @ self.basis["-" + basis_state].dag()
         )
 
         return gate
@@ -183,8 +183,8 @@ class BosonicQubit(metaclass=ABCMeta):
     @property
     def projector(self):
         return (
-            self.basis["+z"] @ jnp.conj(self.basis["+z"]).T
-            + self.basis["-z"] @ jnp.conj(self.basis["-z"]).T
+            self.basis["+z"] @ self.basis["+z"].dag()
+            + self.basis["-z"] @ self.basis["-z"].dag()
         )
 
     @property

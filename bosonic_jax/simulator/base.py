@@ -8,7 +8,6 @@ from numbers import Number
 from typing import Optional, List
 import warnings
 
-from jaxquantum.utils.utils import is_1d
 from bosonic_jax.circuit.base import BosonicCircuit
 import jaxquantum as jqt
 
@@ -177,7 +176,9 @@ def spre(op):
 def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
     p = jqt.qt2jqt(p)
-    use_density_matrix = not is_1d(p)
+
+    use_density_matrix = p.is_dm()
+    
     results = BosonicResults()
     for gate in bcirc.gates:
         U = gate.U
@@ -243,12 +244,12 @@ def hamiltonian_jax_simulate(
 
     p = jqt.qt2jqt(p)
 
-    if len(c_ops) > 0 and is_1d(p):
+    if len(c_ops) > 0 and p.is_dm():
         # if simulating with noise and p is a vector,
         # then turn p into a density matrix
         p = p @ jnp.conj(p).T
 
-    use_density_matrix = not is_1d(p)
+    use_density_matrix = p.is_dm()
     results = BosonicResults() if results_in is None else results_in
 
     for gate in bcirc.gates:
