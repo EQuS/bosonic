@@ -12,7 +12,7 @@ from bosonic_jax.circuit.base import BosonicCircuit
 import jaxquantum as jqt
 
 
-from jax import jit, vmap
+from jax import jit, vmap, Array
 from jax.experimental.ode import odeint
 from jax import tree_util
 from jax import config
@@ -52,21 +52,20 @@ class BosonicResults:
     def __getitem__(self, j: int):
         return self.results[j]
 
-    def calc_expect(self, op: jnp.ndarray, op_name: str):
+    def calc_expect(self, op: jqt.Qarray, op_name: str):
         """
         TODO (if needed):
         This only works for jax simulations.
         We may want to extend it to accomodate QuTiP mesolve sims.
         """
 
-        @jit
-        def calc_exp_state(state: jnp.ndarray):
-            return (jqt.dag(state) @ op @ state)[0][0]
+        def calc_exp_state(state: Array):
+            return (jnp.conj(state).T @ op.data @ state)[0][0]
 
         for i in range(len(self.results)):
             if op_name not in self.results[i]:
                 self.results[i][op_name] = vmap(calc_exp_state)(
-                    self.results[i]["states"]
+                    jqt.jqts2jnps(self.results[i]["states"])
                 )
 
     def append(self, states):
@@ -197,9 +196,9 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
 )
 def hamiltonian_jax_step(
     H_func,  # H_func stores gate dynamics
-    p: jnp.ndarray,
+    p: jqt.Qarray,
     t_list: jnp.ndarray,
-    H0: jnp.ndarray,  # H0 represents the base system dynamics
+    H0: jqt.Qarray,  # H0 represents the base system dynamics
     c_ops=None,
     use_density_matrix=False,
 ):
@@ -224,8 +223,8 @@ def unitary_jax_step(rho, U, use_density_matrix=False):
 @partial(jit, static_argnums=(0, 3))
 def hamiltonian_jax_simulate(
     bcirc: BosonicCircuit,
-    H0: jnp.ndarray,
-    p0: jnp.ndarray = None,
+    H0: jqt.Qarray,
+    p0: jqt.Qarray = None,
     default_unitary=True,
     c_ops=None,
     results_in: Optional[BosonicResults] = None,
@@ -233,7 +232,7 @@ def hamiltonian_jax_simulate(
     """
 
     Args:
-        H0 (jnp.ndarray):
+        H0 (jqt.Qarray):
             base system hamiltonian,
             please make sure this a jnp.array not a QuTiP Qobj
     """
