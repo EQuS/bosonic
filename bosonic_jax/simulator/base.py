@@ -197,7 +197,7 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
 def hamiltonian_jax_step(
     H_func,  # H_func stores gate dynamics
     p: jqt.Qarray,
-    t_list: jnp.ndarray,
+    t_list: Array,
     H0: jqt.Qarray,  # H0 represents the base system dynamics
     c_ops=None,
     use_density_matrix=False,

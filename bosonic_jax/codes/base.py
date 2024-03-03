@@ -36,7 +36,7 @@ class BosonicQubit(metaclass=ABCMeta):
 
         self.params = device_put_params(self.params, self._non_device_params)
 
-        self.common_gates: Dict[str, jnp.ndarray] = {}
+        self.common_gates: Dict[str, jqt.Qarray] = {}
         self._gen_common_gates()
 
         self.wigner_pts = jnp.linspace(-4.5, 4.5, 61)
@@ -72,13 +72,13 @@ class BosonicQubit(metaclass=ABCMeta):
         self.common_gates["a"] = jqt.destroy(N)
 
     @abstractmethod
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Returns:
-            plus_z (jnp.ndarray), minus_z (jnp.ndarray): z basis states
+            plus_z (jqt.Qarray), minus_z (jqt.Qarray): z basis states
         """
 
-    def _get_basis_states(self) -> Dict[str, jnp.ndarray]:
+    def _get_basis_states(self) -> Dict[str, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>
         """
@@ -86,12 +86,12 @@ class BosonicQubit(metaclass=ABCMeta):
         return self._gen_basis_states_from_z(plus_z, minus_z)
 
     def _gen_basis_states_from_z(
-        self, plus_z: jnp.ndarray, minus_z: jnp.ndarray
-    ) -> Dict[str, jnp.ndarray]:
+        self, plus_z: jqt.Qarray, minus_z: jqt.Qarray
+    ) -> Dict[str, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z> from |+-z>
         """
-        basis: Dict[str, jnp.ndarray] = {}
+        basis: Dict[str, jqt.Qarray] = {}
         N = self.params["N"]
 
         # import to make sure that each basis state is a column vec
@@ -118,48 +118,48 @@ class BosonicQubit(metaclass=ABCMeta):
     #     """
 
     @property
-    def x_U(self) -> jnp.ndarray:
+    def x_U(self) -> jqt.Qarray:
         """
         Logical X unitary gate.
         """
         return self._gen_pauli_U("x")
 
     @property
-    def x_H(self) -> Optional[jnp.ndarray]:
+    def x_H(self) -> Optional[jqt.Qarray]:
         """
         Logical X hamiltonian.
         """
         return None
 
     @property
-    def y_U(self) -> jnp.ndarray:
+    def y_U(self) -> jqt.Qarray:
         """
         Logical Y unitary gate.
         """
         return self._gen_pauli_U("y")
 
     @property
-    def y_H(self) -> Optional[jnp.ndarray]:
+    def y_H(self) -> Optional[jqt.Qarray]:
         """
         Logical Y hamiltonian.
         """
         return None
 
     @property
-    def z_U(self) -> jnp.ndarray:
+    def z_U(self) -> jqt.Qarray:
         """
         Logical Z unitary gate.
         """
         return self._gen_pauli_U("z")
 
     @property
-    def z_H(self) -> Optional[jnp.ndarray]:
+    def z_H(self) -> Optional[jqt.Qarray]:
         """
         Logical Z hamiltonian.
         """
         return None
 
-    def _gen_pauli_U(self, basis_state: str) -> jnp.ndarray:
+    def _gen_pauli_U(self, basis_state: str) -> jqt.Qarray:
         """
         Generates unitary for Pauli X, Y, Z.
 
@@ -167,7 +167,7 @@ class BosonicQubit(metaclass=ABCMeta):
             basis_state (str): "x", "y", "z"
 
         Returns:
-            U (jnp.ndarray): Pauli unitary
+            U (jqt.Qarray): Pauli unitary
         """
         H = getattr(self, basis_state + "_H")
         if H is not None:

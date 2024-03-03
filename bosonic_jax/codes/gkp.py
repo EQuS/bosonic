@@ -77,7 +77,7 @@ class GKPQubit(BosonicQubit):
             1.0j * self.params["l"] * y_axis
         )
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>.
         step 1: use ideal GKP stabilizers to find ideal GKP |+z> state
@@ -131,15 +131,15 @@ class GKPQubit(BosonicQubit):
     # gates
     # ======================================================
     @property
-    def x_U(self) -> jnp.ndarray:
+    def x_U(self) -> jqt.Qarray:
         return self.common_gates["X"]
 
     @property
-    def y_U(self) -> jnp.ndarray:
+    def y_U(self) -> jqt.Qarray:
         return self.common_gates["Y"]
 
     @property
-    def z_U(self) -> jnp.ndarray:
+    def z_U(self) -> jqt.Qarray:
         return self.common_gates["Z"]
 
 

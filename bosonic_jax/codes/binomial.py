@@ -32,7 +32,7 @@ class BinomialQubit(BosonicQubit):
         if "D" not in self.params:
             self.params["D"] = 0
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>
         """

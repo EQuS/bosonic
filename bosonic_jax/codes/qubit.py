@@ -25,7 +25,7 @@ class Qubit(BosonicQubit):
         super()._params_validation()
         self.params["N"] = 2
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>
         """
@@ -35,15 +35,15 @@ class Qubit(BosonicQubit):
         return plus_z, minus_z
 
     @property
-    def x_U(self) -> jnp.ndarray:
+    def x_U(self) -> jqt.Qarray:
         return jqt.sigmax()
 
     @property
-    def y_U(self) -> jnp.ndarray:
+    def y_U(self) -> jqt.Qarray:
         return jqt.sigmay()
 
     @property
-    def z_U(self) -> jnp.ndarray:
+    def z_U(self) -> jqt.Qarray:
         return jqt.sigmaz()
 
     def plot(self, state, ax=None, qp_type="", **kwargs) -> None:

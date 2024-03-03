@@ -38,10 +38,10 @@ class CDGate(BosonicGate):
 
         return [H_tot]
 
-    def get_H_func(self, t: float) -> jnp.ndarray:
+    def get_H_func(self, t: float) -> jqt.Qarray:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         N = self.bcirc.breg[self.bqubit_indxs[0]].params["N"]
         N2 = self.bcirc.breg[self.bqubit_indxs[1]].params["N"]
         assert N2 == 2, ValueError(
@@ -66,7 +66,7 @@ class QubitRotationGate(BosonicGate):
 
     label = "Qubit Rotation"
 
-    def get_sigma_tot(self) -> jnp.ndarray:
+    def get_sigma_tot(self) -> jqt.Qarray:
         """
         Helper function that returns (a•σ) = ax*σx + ay*σy + az*σz given
         an input Bloch vector a. If none is provided, default to σx.
@@ -98,10 +98,10 @@ class QubitRotationGate(BosonicGate):
 
         return [H_tot]
 
-    def get_H_func(self, t: float) -> jnp.ndarray:
+    def get_H_func(self, t: float) -> jqt.Qarray:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         theta = self.params["theta"]
         sigma_tot = self.get_sigma_tot()
 

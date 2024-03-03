@@ -10,8 +10,7 @@ from bosonic_jax.codes.base import BosonicQubit
 from jaxquantum.utils.utils import device_put_params
 import jaxquantum as jqt
 
-from jax import device_put
-from jax import config
+from jax import device_put, config, Array
 import jax.numpy as jnp
 import jax.scipy as jsp
 
@@ -96,7 +95,7 @@ class BosonicCircuit:
         gate_type: Type["BosonicGate"],
         bqubit_indxs: Union[int, Tuple[int, ...]],
         params: Optional[Dict[str, complex]] = None,
-        ts: Optional[jnp.ndarray] = None,
+        ts: Optional[Array] = None,
         use_unitary: Optional[bool] = False,
     ):
         if type(bqubit_indxs) == int:
@@ -189,7 +188,7 @@ class BosonicGate(metaclass=ABCMeta):
         bcirc: BosonicCircuit,
         bqubit_indxs: Union[int, Tuple[int, ...]],
         params: Optional[Dict[str, Any]] = None,
-        ts: Optional[jnp.ndarray] = None,
+        ts: Optional[Array] = None,
         use_unitary: Optional[bool] = False,
     ):
         if type(bqubit_indxs) == int:

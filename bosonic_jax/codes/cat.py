@@ -29,7 +29,7 @@ class CatQubit(BosonicQubit):
         if "alpha" not in self.params:
             self.params["alpha"] = 2
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>
         """
