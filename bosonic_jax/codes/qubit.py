@@ -47,7 +47,7 @@ class Qubit(BosonicQubit):
         return jqt.sigmaz()
 
     def plot(self, state, ax=None, qp_type="", **kwargs) -> None:
-        state = self.jax2qt(state)
+        state = self.jqt2qt(state)
         with warnings.catch_warnings():
             # TODO: suppressing deprecation warnings, deal with this
             warnings.simplefilter("ignore")

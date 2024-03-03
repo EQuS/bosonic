@@ -97,8 +97,8 @@ class BosonicQubit(metaclass=ABCMeta):
         # import to make sure that each basis state is a column vec
         # otherwise, transposing a 1D vector will do nothing
 
-        basis["+z"] = plus_z.reshape(N, 1)
-        basis["-z"] = minus_z.reshape(N, 1)
+        basis["+z"] = plus_z
+        basis["-z"] = minus_z
 
         basis["+x"] = jqt.unit(basis["+z"] + basis["-z"])
         basis["-x"] = jqt.unit(basis["+z"] - basis["-z"])
@@ -106,9 +106,8 @@ class BosonicQubit(metaclass=ABCMeta):
         basis["-y"] = jqt.unit(basis["+z"] - 1j * basis["-z"])
         return basis
 
-    def jax2qt(self, state):
-        N = self.params["N"]
-        return jqt.jax2qt(state, dims=[[N], [1]] if is_1d(state) else [[N], [N]])
+    def jqt2qt(self, state):
+        return jqt.jqt2qt(state)
 
     # gates
     # ======================================================
@@ -230,7 +229,7 @@ class BosonicQubit(metaclass=ABCMeta):
         """
         Assumes state has same dims as initial_state.
         """
-        state = self.jax2qt(state)
+        state = self.jqt2qt(state)
 
         if ax is None:
             _, ax = plt.subplots(1, figsize=(4, 3), dpi=200)

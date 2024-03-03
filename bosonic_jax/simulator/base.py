@@ -117,7 +117,7 @@ def unitary_step(psi, U):
 
 def unitary_simulate(bcirc: BosonicCircuit, p0=None):
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
-    p = bcirc.jax2qt(p)
+    p = bcirc.jqt2qt(p)
 
     results = BosonicResults()
     for gate in bcirc.gates:
@@ -135,8 +135,8 @@ def hamiltonian_simulate(
     # p0 is a density matrix, but can also be wavefunction if c_ops=None
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
 
-    p = bcirc.jax2qt(p)
-    H0 = bcirc.jax2qt(H0)
+    p = bcirc.jqt2qt(p)
+    H0 = bcirc.jqt2qt(H0)
 
     results = BosonicResults()
     for gate in bcirc.gates:
@@ -176,12 +176,12 @@ def spre(op):
 @partial(jit, static_argnums=(0,))
 def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
-    p = jqt.qt2jax(p)
+    p = jqt.qt2jqt(p)
     use_density_matrix = not is_1d(p)
     results = BosonicResults()
     for gate in bcirc.gates:
         U = gate.U
-        # U = jqt.qt2jax(U) # TODO: check if necessary
+        # U = jqt.qt2jqt(U) # TODO: check if necessary
         p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
         results.append([p])
     return results
@@ -241,7 +241,7 @@ def hamiltonian_jax_simulate(
     c_ops = c_ops if c_ops is not None else jnp.array([])
     c_ops = jnp.array(c_ops)
 
-    p = jqt.qt2jax(p)
+    p = jqt.qt2jqt(p)
 
     if len(c_ops) > 0 and is_1d(p):
         # if simulating with noise and p is a vector,
@@ -268,7 +268,7 @@ def hamiltonian_jax_simulate(
             p = states[-1]
         elif default_unitary:
             # H_func is None or returns None, then just use unitary evolution
-            U = jqt.qt2jax(gate.U)
+            U = jqt.qt2jqt(gate.U)
             p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
             results.append(jnp.array([p]))
         else:

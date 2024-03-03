@@ -135,9 +135,8 @@ class BosonicCircuit:
     def draw(self):
         NotImplementedError("Not implemented yet!")
 
-    def jax2qt(self, state: jnp.ndarray):
-        dims = self.dims if is_1d(state) else self.dm_dims
-        return jqt.jax2qt(state, dims=dims)
+    def jqt2qt(self, state: jnp.ndarray):
+        return jqt.jqt2qt(state)
 
     def plot(
         self,
@@ -152,7 +151,7 @@ class BosonicCircuit:
 
         """
         state = state if state is not None else self.default_initial_state
-        state = self.jax2qt(state)
+        state = self.jqt2qt(state)
 
         if bqubit_indx is not None:
             self.breg[bqubit_indx].plot(state.ptrace(bqubit_indx))  # type: ignore
@@ -261,10 +260,10 @@ class BosonicGate(metaclass=ABCMeta):
         if H is None:
             return None
         H_qt = [
-            0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jax2qt(H[0])
+            0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jqt2qt(H[0])
         ]
         for i in range(1, len(H)):
-            H_qt.append([self.bcirc.jax2qt(H[i][0]), H[i][1]])
+            H_qt.append([self.bcirc.jqt2qt(H[i][0]), H[i][1]])
         return H_qt
 
     @property
@@ -276,7 +275,7 @@ class BosonicGate(metaclass=ABCMeta):
 
     @property
     def U_qt(self):
-        return self.bcirc.jax2qt(self.U)
+        return self.bcirc.jqt2qt(self.U)
 
     @property
     @abstractmethod
