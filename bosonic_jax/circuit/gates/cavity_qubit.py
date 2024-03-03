@@ -54,7 +54,7 @@ class CDGate(BosonicGate):
             jqt.sigmaz() / 2,
         ]
         H_tot = self.extend_gate(Hs)
-        U_tot = jsp.linalg.expm(1.0j * H_tot)
+        U_tot = jqt.expm(1.0j * H_tot)
         return U_tot
 
 
@@ -107,4 +107,4 @@ class QubitRotationGate(BosonicGate):
 
         H_tot = self.extend_gate([sigma_tot * theta / 2])
 
-        return jsp.linalg.expm(-1.0j * H_tot)
+        return jqt.expm(-1.0j * H_tot)

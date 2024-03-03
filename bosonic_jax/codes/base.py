@@ -171,7 +171,7 @@ class BosonicQubit(metaclass=ABCMeta):
         """
         H = getattr(self, basis_state + "_H")
         if H is not None:
-            return jsp.linalg.expm(1.0j * H)
+            return jqt.expm(1.0j * H)
 
         gate = (
             self.basis["+" + basis_state] @ self.basis["+" + basis_state].dag()
