@@ -88,7 +88,7 @@ tree_util.register_pytree_node(
 
 def execute(bcirc: BosonicCircuit, backend: str, **kwargs):
     p0 = kwargs.pop("p0", None)
-    H0 = kwargs.pop("H0", 0)
+    H0 = kwargs.pop("H0", 0j)
     if backend == UNITARY:
         warnings.warn(
             "Please use the 'unitary_jax' backend instead.",
@@ -164,11 +164,6 @@ def hamiltonian_simulate(
 
 # JAX
 # ==================================================================================
-def spre(op):
-    op_dag = jnp.conj(op.T)
-    return lambda rho: 0.5 * (
-        2 * op @ rho @ op_dag - rho @ op_dag @ op - op_dag @ op @ rho
-    )
 
 
 @partial(jit, static_argnums=(0,))
@@ -185,6 +180,72 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
         p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
         results.append([p])
     return results
+
+@partial(jit, static_argnums=(2,))
+def unitary_jax_step(rho, U, use_density_matrix=False):
+    if use_density_matrix:
+        U_dag = U.dag()
+        return U @ rho @ U_dag
+    return U @ rho
+
+
+
+@partial(jit, static_argnums=(0, 3))
+def hamiltonian_jax_simulate(
+    bcirc: BosonicCircuit,
+    H0: jqt.Qarray,
+    p0: jqt.Qarray = None,
+    default_unitary=True,
+    c_ops=None,
+    results_in: Optional[BosonicResults] = None,
+):
+    """
+
+    Args:
+        H0 (jqt.Qarray):
+            base system hamiltonian,
+            please make sure this a jnp.array not a QuTiP Qobj
+    """
+    # p0 is a density matrix, but can also be wavefunction if c_ops=None
+    p = p0 if p0 is not None else bcirc.default_initial_state
+    c_ops = c_ops if c_ops is not None else []
+
+    p = jqt.qt2jqt(p)
+
+    if len(c_ops) > 0 and not p.is_dm():
+        # if simulating with noise and p is a vector,
+        # then turn p into a density matrix
+        p = p.to_dm()
+
+    use_density_matrix = p.is_dm()
+    results = BosonicResults() if results_in is None else results_in
+
+    for gate in bcirc.gates:
+        t_list = gate.ts
+        use_hamiltonian = not (gate.H_func is None or gate.H_func(t_list[0]) is None)
+
+        if use_hamiltonian:
+            states = hamiltonian_jax_step(
+                gate.H_func,
+                p,
+                t_list,
+                H0,
+                c_ops=c_ops,
+                use_density_matrix=use_density_matrix,
+            )
+            results.append(states)
+            p = states[-1]
+        elif default_unitary:
+            # H_func is None or returns None, then just use unitary evolution
+            U = jqt.qt2jqt(gate.U)
+            p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
+            results.append([p])
+        else:
+            warnings.warn(f"{gate} Gate was skipped.", RuntimeWarning, stacklevel=2)
+
+    return results
+
+
 
 
 @partial(
@@ -211,67 +272,3 @@ def hamiltonian_jax_step(
     else:
         return jqt.sesolve(p, t_list, Ht=Ht)
 
-
-@partial(jit, static_argnums=(2,))
-def unitary_jax_step(rho, U, use_density_matrix=False):
-    if use_density_matrix:
-        U_dag = jnp.conj(U).T
-        return U @ rho @ U_dag
-    return U @ rho
-
-
-@partial(jit, static_argnums=(0, 3))
-def hamiltonian_jax_simulate(
-    bcirc: BosonicCircuit,
-    H0: jqt.Qarray,
-    p0: jqt.Qarray = None,
-    default_unitary=True,
-    c_ops=None,
-    results_in: Optional[BosonicResults] = None,
-):
-    """
-
-    Args:
-        H0 (jqt.Qarray):
-            base system hamiltonian,
-            please make sure this a jnp.array not a QuTiP Qobj
-    """
-    # p0 is a density matrix, but can also be wavefunction if c_ops=None
-    p = p0 if p0 is not None else bcirc.default_initial_state.copy()
-    c_ops = c_ops if c_ops is not None else jnp.array([])
-    c_ops = jnp.array(c_ops)
-
-    p = jqt.qt2jqt(p)
-
-    if len(c_ops) > 0 and p.is_dm():
-        # if simulating with noise and p is a vector,
-        # then turn p into a density matrix
-        p = p @ jnp.conj(p).T
-
-    use_density_matrix = p.is_dm()
-    results = BosonicResults() if results_in is None else results_in
-
-    for gate in bcirc.gates:
-        t_list = gate.ts
-        use_hamiltonian = not (gate.H_func is None or gate.H_func(t_list[0]) is None)
-
-        if use_hamiltonian:
-            states = hamiltonian_jax_step(
-                gate.H_func,
-                p,
-                t_list,
-                H0,
-                c_ops=c_ops,
-                use_density_matrix=use_density_matrix,
-            )
-            results.append(states)
-            p = states[-1]
-        elif default_unitary:
-            # H_func is None or returns None, then just use unitary evolution
-            U = jqt.qt2jqt(gate.U)
-            p = unitary_jax_step(p, U, use_density_matrix=use_density_matrix)
-            results.append(jnp.array([p]))
-        else:
-            warnings.warn(f"{gate} Gate was skipped.", RuntimeWarning, stacklevel=2)
-
-    return results
