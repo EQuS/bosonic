@@ -40,12 +40,12 @@ class GKPQubit(BosonicQubit):
         )
 
         # finite energy
-        self.common_gates["E"] = jsp.linalg.expm(
+        self.common_gates["E"] = jqt.expm(
             -self.params["delta"] ** 2
             * self.common_gates["a_dag"]
             @ self.common_gates["a"]
         )
-        self.common_gates["E_inv"] = jsp.linalg.expm(
+        self.common_gates["E_inv"] = jqt.expm(
             self.params["delta"] ** 2
             * self.common_gates["a_dag"]
             @ self.common_gates["a"]
@@ -56,8 +56,8 @@ class GKPQubit(BosonicQubit):
         y_axis = x_axis + z_axis
 
         # gates
-        X_0 = jsp.linalg.expm(1.0j * self.params["l"] / 2.0 * z_axis)
-        Z_0 = jsp.linalg.expm(1.0j * self.params["l"] / 2.0 * x_axis)
+        X_0 = jqt.expm(1.0j * self.params["l"] / 2.0 * z_axis)
+        Z_0 = jqt.expm(1.0j * self.params["l"] / 2.0 * x_axis)
         Y_0 = 1.0j * X_0 @ Z_0
         self.common_gates["X"] = self._make_op_finite_energy(X_0)
         self.common_gates["Z"] = self._make_op_finite_energy(Z_0)
@@ -77,7 +77,7 @@ class GKPQubit(BosonicQubit):
             1.0j * self.params["l"] * y_axis
         )
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>.
         step 1: use ideal GKP stabilizers to find ideal GKP |+z> state
@@ -104,14 +104,14 @@ class GKPQubit(BosonicQubit):
             - self.common_gates["Z_s_0"]  # bosonic |+z> state
         )
 
-        _, vecs = jnp.linalg.eigh(H_0)
-        gstate_ideal = vecs[:, 0]
+        _, vecs = jnp.linalg.eigh(H_0.data)
+        gstate_ideal = jqt.Qarray.create(vecs[:, 0])
 
         # step 2: make ideal eigenvector finite energy
         gstate = self.common_gates["E"] @ gstate_ideal
 
         N = self.params["N"]
-        plus_z = jqt.unit(gstate).reshape(N, 1)
+        plus_z = jqt.unit(gstate)
         minus_z = self.common_gates["X"] @ plus_z
         return plus_z, minus_z
 
@@ -126,20 +126,20 @@ class GKPQubit(BosonicQubit):
         return self.common_gates["E"] @ op @ self.common_gates["E_inv"]
 
     def _symmetrized_expm(self, op):
-        return (jsp.linalg.expm(op) + jsp.linalg.expm(-1.0 * op)) / 2.0
+        return (jqt.expm(op) + jqt.expm(-1.0 * op)) / 2.0
 
     # gates
     # ======================================================
     @property
-    def x_U(self) -> jnp.ndarray:
+    def x_U(self) -> jqt.Qarray:
         return self.common_gates["X"]
 
     @property
-    def y_U(self) -> jnp.ndarray:
+    def y_U(self) -> jqt.Qarray:
         return self.common_gates["Y"]
 
     @property
-    def z_U(self) -> jnp.ndarray:
+    def z_U(self) -> jqt.Qarray:
         return self.common_gates["Z"]
 
 

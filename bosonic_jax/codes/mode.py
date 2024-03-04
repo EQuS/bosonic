@@ -21,7 +21,7 @@ class BosonicMode(BosonicQubit):
     def _params_validation(self):
         super()._params_validation()
 
-    def _get_basis_z(self) -> Tuple[jnp.ndarray, jnp.ndarray]:
+    def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
         Construct basis states |+-x>, |+-y>, |+-z>
         """

@@ -13,15 +13,15 @@ class DelayGate(BosonicGate):
     label = "I"
 
     def get_H(self) -> List:
-        Hs: List[jnp.ndarray] = []
+        Hs: List[jqt.Qarray] = []
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+    def get_H_func(self, t: float) -> Optional[jqt.Qarray]:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
-        Us: List[jnp.ndarray] = []
+    def get_U(self) -> jqt.Qarray:
+        Us: List[jqt.Qarray] = []
         U_tot = self.extend_gate(Us)
         return U_tot
 
@@ -37,7 +37,7 @@ class DisplaceGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+    def get_H_func(self, t: float) -> Optional[jqt.Qarray]:
         return self.H[0]
 
 
@@ -52,5 +52,5 @@ class PhaseRotationGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+    def get_H_func(self, t: float) -> Optional[jqt.Qarray]:
         return self.H[0]

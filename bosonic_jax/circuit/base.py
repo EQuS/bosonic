@@ -7,11 +7,10 @@ from abc import abstractmethod, ABCMeta
 from numbers import Number
 
 from bosonic_jax.codes.base import BosonicQubit
-from jaxquantum.utils.utils import is_1d, device_put_params
+from jaxquantum.utils.utils import device_put_params
 import jaxquantum as jqt
 
-from jax import device_put
-from jax import config
+from jax import device_put, config, Array
 import jax.numpy as jnp
 import jax.scipy as jsp
 
@@ -75,7 +74,7 @@ class BosonicCircuit:
     def default_initial_state(self):
         return self.gen_default_initial_state()
 
-    def gen_default_initial_state(self) -> jnp.ndarray:
+    def gen_default_initial_state(self) -> jqt.Qarray:
         state = None
 
         for bq in self.breg.bqubits:
@@ -83,7 +82,7 @@ class BosonicCircuit:
                 bq.basis["+z"] if state is None else jqt.tensor(state, bq.basis["+z"])
             )
 
-        return cast(jnp.ndarray, state)
+        return cast(jqt.Qarray, state)
 
     def reset_gates(self) -> None:
         self.gates: List[BosonicGate] = []
@@ -96,7 +95,7 @@ class BosonicCircuit:
         gate_type: Type["BosonicGate"],
         bqubit_indxs: Union[int, Tuple[int, ...]],
         params: Optional[Dict[str, complex]] = None,
-        ts: Optional[jnp.ndarray] = None,
+        ts: Optional[Array] = None,
         use_unitary: Optional[bool] = False,
     ):
         if type(bqubit_indxs) == int:
@@ -135,14 +134,13 @@ class BosonicCircuit:
     def draw(self):
         NotImplementedError("Not implemented yet!")
 
-    def jax2qt(self, state: jnp.ndarray):
-        dims = self.dims if is_1d(state) else self.dm_dims
-        return jqt.jax2qt(state, dims=dims)
+    def jqt2qt(self, state: jqt.Qarray):
+        return jqt.jqt2qt(state)
 
     def plot(
         self,
         bqubit_indx: Optional[int] = None,
-        state: Optional[Union[jnp.ndarray, jnp.ndarray]] = None,
+        state: Optional[jqt.Qarray] = None,
     ):
         """
         Plot default_initial_state or other state of the bcirc.
@@ -152,7 +150,7 @@ class BosonicCircuit:
 
         """
         state = state if state is not None else self.default_initial_state
-        state = self.jax2qt(state)
+        state = self.jqt2qt(state)
 
         if bqubit_indx is not None:
             self.breg[bqubit_indx].plot(state.ptrace(bqubit_indx))  # type: ignore
@@ -161,7 +159,7 @@ class BosonicCircuit:
                 self.breg[j].plot(state.ptrace(j))  # type: ignore
 
 
-def extend_op_to_circ(Ms: Dict[int, jnp.ndarray], bcirc: BosonicCircuit):
+def extend_op_to_circ(Ms: Dict[int, jqt.Qarray], bcirc: BosonicCircuit):
     """
     Arguments:
         Ms (dict):
@@ -173,7 +171,7 @@ def extend_op_to_circ(Ms: Dict[int, jnp.ndarray], bcirc: BosonicCircuit):
             bosonic quantum circuit
 
     Returns:
-        M_tot (jnp.ndarray):
+        M_tot (jqt.Qarray):
             tensored operator that can act on state space of entire circuit
     """
     M_tot = None
@@ -190,7 +188,7 @@ class BosonicGate(metaclass=ABCMeta):
         bcirc: BosonicCircuit,
         bqubit_indxs: Union[int, Tuple[int, ...]],
         params: Optional[Dict[str, Any]] = None,
-        ts: Optional[jnp.ndarray] = None,
+        ts: Optional[Array] = None,
         use_unitary: Optional[bool] = False,
     ):
         if type(bqubit_indxs) == int:
@@ -214,7 +212,7 @@ class BosonicGate(metaclass=ABCMeta):
         return self.label
 
     @abstractmethod
-    def get_H_func(self, t: float) -> Optional[jnp.ndarray]:
+    def get_H_func(self, t: float) -> Optional[jqt.Qarray]:
         """
         H(t), should be overriden as needed
 
@@ -222,7 +220,7 @@ class BosonicGate(metaclass=ABCMeta):
             t (float): time
 
         Returns:
-            jnp.ndarray
+            jqt.Qarray
         """
 
     @property
@@ -240,8 +238,8 @@ class BosonicGate(metaclass=ABCMeta):
         Allows the storage of H calculations. If use_unitary, then we forgo Hamiltonian simulation.
 
         Returns:
-            H (list): first element is always a jnp.ndarray or 0
-            other elements are lists of the form [jnp.ndarray, str]
+            H (list): first element is always a jqt.Qarray or 0
+            other elements are lists of the form [jqt.Qarray, str]
             E.g. [sigmaz, [sigmax, "cos(t)"]]
             [0, [sigmax, "cos(t)"]]
             [sigmaz]
@@ -261,10 +259,10 @@ class BosonicGate(metaclass=ABCMeta):
         if H is None:
             return None
         H_qt = [
-            0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jax2qt(H[0])
+            0 if isinstance(H[0], Number) and H[0] == 0 else self.bcirc.jqt2qt(H[0])
         ]
         for i in range(1, len(H)):
-            H_qt.append([self.bcirc.jax2qt(H[i][0]), H[i][1]])
+            H_qt.append([self.bcirc.jqt2qt(H[i][0]), H[i][1]])
         return H_qt
 
     @property
@@ -276,7 +274,7 @@ class BosonicGate(metaclass=ABCMeta):
 
     @property
     def U_qt(self):
-        return self.bcirc.jax2qt(self.U)
+        return self.bcirc.jqt2qt(self.U)
 
     @property
     @abstractmethod
@@ -295,21 +293,21 @@ class BosonicGate(metaclass=ABCMeta):
                 E.g. [sigmaz, [sigmax, "cos(t)"]]
         """
 
-    def _get_U_from_H(self) -> Optional[jnp.ndarray]:
+    def _get_U_from_H(self) -> Optional[jqt.Qarray]:
         H = self.H
         if type(H) is list and len(H) == 1:
             H0 = H[0]
-            if isinstance(H0, jnp.ndarray):
-                return jsp.linalg.expm(1.0j * H0)
+            if isinstance(H0, jqt.Qarray):
+                return jqt.expm(1.0j * H0)
         return None
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         U = self._get_U_from_H()
         if U is not None:
             return U
         raise NotImplementedError("Unitary gate has not been implemented.")
 
-    def extend_gate(self, Ms: List[jnp.ndarray]):
+    def extend_gate(self, Ms: List[jqt.Qarray]):
         """
         This can be used to extend a unitary gate or a hamiltonian.
         """
@@ -325,7 +323,7 @@ class BosonicGate(metaclass=ABCMeta):
 
 def gen_custom_gate(
     Hs_func: Optional[Callable] = None,
-    Us: Optional[List[jnp.ndarray]] = None,
+    Us: Optional[List[jqt.Qarray]] = None,
 ):
     class CustomGate(BosonicGate):
         """CustomGate."""
@@ -336,14 +334,14 @@ def gen_custom_gate(
             # TODO: implement this
             return [0]
 
-        def get_H_func(self, t: float) -> jnp.ndarray:
+        def get_H_func(self, t: float) -> jqt.Qarray:
             if Hs_func is None:
                 raise NotImplementedError(
                     "Hs_func was not provided upon initialization."
                 )
             return self.extend_gate(Hs_func(t))
 
-        def get_U(self) -> jnp.ndarray:
+        def get_U(self) -> jqt.Qarray:
             if Us is None:
                 raise NotImplementedError("Us was not provided upon initialization.")
             U_tot = self.extend_gate(Us)
@@ -368,10 +366,10 @@ class XGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> jnp.ndarray:
+    def get_H_func(self, t: float) -> jqt.Qarray:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].x_U]
         U_tot = self.extend_gate(Us)
         return U_tot
@@ -388,10 +386,10 @@ class YGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> jnp.ndarray:
+    def get_H_func(self, t: float) -> jqt.Qarray:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].y_U]
         U_tot = self.extend_gate(Us)
         return U_tot
@@ -408,10 +406,10 @@ class ZGate(BosonicGate):
         H_tot = self.extend_gate(Hs)
         return [H_tot]
 
-    def get_H_func(self, t: float) -> jnp.ndarray:
+    def get_H_func(self, t: float) -> jqt.Qarray:
         return self.H[0]
 
-    def get_U(self) -> jnp.ndarray:
+    def get_U(self) -> jqt.Qarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].z_U]
         U_tot = self.extend_gate(Us)
         return U_tot
