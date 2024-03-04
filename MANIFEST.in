@@ -1,2 +1,3 @@
+include docs/assets/logo_sq.png
 include bosonic-jax/VERSION.txt
 include README.md
