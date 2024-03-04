@@ -1,2 +1,2 @@
-include bosonic/VERSION.txt
+include bosonic-jax/VERSION.txt
 include README.md
