@@ -14,7 +14,7 @@ We present `bosonic-jax` as a framework with which to simulate quantum circuits 
 
 ## Installation
 
-`bosonic-jax` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:v
+`bosonic-jax` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:
 
 ```bash
 pip install bosonic-jax
