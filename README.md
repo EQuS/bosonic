@@ -1,100 +1,70 @@
-# bosonic-jax
+<h1 align="center">
+    <img src="./docs/assets/logo_sq.png" height="120" alt="bosonic-jax logo">
+</h1>
 
-[![License](https://img.shields.io/github/license/Phionx/bosonic-jax.svg?style=popout-square)](https://opensource.org/licenses/MIT) [![](https://img.shields.io/github/release/Phionx/bosonic-jax.svg?style=popout-square)](https://github.com/Phionx/bosonic-jax/releases) [![](https://img.shields.io/pypi/dm/bosonic-jax.svg?style=popout-square)](https://pypi.org/project/bosonic-jax/)
 
-***Simulating quantum circuits built using bosonic QEC code qubits with JAX.***
+[![License](https://img.shields.io/github/license/EQuS/bosonic-jax.svg?style=popout-square)](https://opensource.org/license/apache-2-0) [![](https://img.shields.io/github/release/EQuS/bosonic-jax.svg?style=popout-square)](https://github.com/EQuS/bosonic-jax/releases) [![](https://img.shields.io/pypi/dm/bosonic-jax.svg?style=popout-square)](https://pypi.org/project/bosonic-jax/)
 
-## Motivation
+[S. R. Jha](https://github.com/Phionx), [S. Chowdhury](https://github.com/shoumikdc), [M. Hays](https://scholar.google.com/citations?user=06z0MjwAAAAJ), [J. A. Grover](https://scholar.google.com/citations?user=igewch8AAAAJ), [W. D. Oliver](https://scholar.google.com/citations?user=4vNbnqcAAAAJ&hl=en)
 
-We present `bosonic-jax` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic-jax` ontop of `JAX` to enable the accelerated unitary and hamiltonian simulation of these quantum circuits with experimentally realisitic noise and dissipation.
+**Docs:** [https://equs.github.io/bosonic-jax](https://equs.github.io/bosonic-jax)
+
+We present `bosonic-jax` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic-jax` ontop of `JAX` to enable the auto differentiable and (CPU, GPU, TPU) accelerated unitary and hamiltonian simulation of these quantum circuits under experimentally realisitic noise and dissipation.
 
 
 ## Installation
 
-*Conda users, please make sure to `conda install pip` before running any pip installation if you want to install `bosonic-jax` into your conda environment.*
+`bosonic-jax` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:v
 
-#### Install from PyPI
-
-`bosonic-jax` will soon be published on PyPI. So, to install, simply run:
-
-```python
+```bash
 pip install bosonic-jax
 ```
 
-
-To check if the installation was successful, run:
-```python
-python3
->>> import bosonic_jax as bcj
-```
-
-If pip installation doesn't work, please build from source, as detailed below. 
-
-#### Build from source
-
-To build `bosonic-jax` from source, pip install using:
-```
-git clone git@github.com:Phionx/bosonic-jax.git
-cd bosonic-jax
-pip install --upgrade .
-```
-
-If you also want to download the dependencies needed to run optional tutorials, please use `pip install --upgrade .[dev,docs]` or `pip install --upgrade '.[dev,docs]'` (for `zsh` users).
-
-***Please Note:***
-For now, you will also have to manually install the `bosonic_jax` dependency, to learn how to do so please visit: [https://github.com/EQuS/bosonic-jax](https://github.com/EQuS/bosonic-jax).
-
-#### Installation for Devs
-
-If you intend to contribute to this project, please install `bosonic-jax` in develop mode as follows:
-```sh
-git clone git@github.com:Phionx/bosonic-jax.git
-cd bosonic-jax
-pip install -e .[dev,docs]
-```
-Please use `pip install -e '.[dev,docs]'` if you are a `zsh` user.
+For more details, please visit the getting started > installation section of our [docs](https://equs.github.io/bosonic-jax/getting_started/installation.html).
 
 
-Installing the package in the usual non-editable mode would require a developer to upgrade their pip installation (i.e. run `pip install --upgrade .`) every time they update the package source code.
+## An Example
 
-***Please Note:***
-For now, you will also have to manually install the `bosonic_jax` dependency, to learn how to do so please visit: [https://github.com/EQuS/bosonic-jax](https://github.com/EQuS/bosonic-jax).
-
-
-## Documentation
-
-Documentation should be viewable here: [https://github.com/pages/EQuS/bosonic-jax/](https://github.com/pages/EQuS/bosonic-jax/) 
-
-
-### Build and view locally
-
-To view documentation locally, plesae make sure the install the requirements under the `docs` extra, as specified above. Then, run the following:
+Here's an example on how to use `bosonic-jax`:
 
 ```
-mkdocs serve
+from bosonic_jax import BosonicRegister, GKPQubit, Qubit, BosonicCircuit, PhaseRotationGate, CDGate, execute
+import jax.numpy as jnp
+
+breg = BosonicRegister([GKPQubit(),Qubit()]) # [q0,q1]
+bcirc = BosonicCircuit(breg)
+
+bcirc.x(1) # add an X Gate on q1
+bcirc.add(PhaseRotationGate, 0, {"phi": jnp.pi/4}) 
+bcirc.add(CDGate, (0,1), {"beta": 1}) # q0 is the control
+
+results = execute(bcirc, "unitary_jax")
+results.plot(bcirc, 0)
+results.plot(bcirc, 1)
 ```
 
-The documentation should now be at the url provided by the above command. 
+## Acknowledgements & History
 
-### Updating Docs
+**Core Devs:** [Shantanu A. Jha](https://github.com/Phionx), [Shoumik Chowdhury](https://github.com/shoumikdc)
 
-The documentation should be updated automatically when any changes are made to the `main` branch. However, updates can also be forced by running:
 
+This package was initiall developed without JAX in the fall of 2021. Then, `bosonic-jax` was rebuilt on JAX in early 2022. This package was briefly announced to the world at APS March Meeting 2023 and released to a select few academic groups shortly after. Since then, this package has been open sourced and developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/). 
+
+## Citation
+
+Thank you for taking the time to try our package out. If you found it useful in your research, please cite us as follows:
+
+``` 
+@unpublished{jha2024jaxquantum,
+  title  = {An auto differentiable and hardware accelerated software toolkit for quantum circuit design, simulation and control},
+  author = {Shantanu R. Jha, Shoumik Chowdhury, Max Hays, Jeff A. Grover, William D. Oliver},
+  year   = {2024},
+  url    = {https://github.com/EQuS/jaxquantum, https://github.com/EQuS/bosonic-jax, https://github.com/EQuS/qcsys}
+}
 ```
-mkdocs gh-deploy --force
-```
-This will build your documentation and deploy it to a branch gh-pages in your repository.
+> S. R. Jha, S. Chowdhury, M. Hays, J. A. Grover, W. D. Oliver. An auto differentiable and hardware accelerated software toolkit for quantum circuit design, simulation and control (2024), in preparation.
 
-## Codebase
 
-The codebase is split across `bosonic_jax/codes` and `bosonic_jax/simulator`, which respectively provide tooling for several bosonic QEC codes (e.g. cat, binomial, GKP codes) and simulators with which to benchmark circuits built using these code qubits.
+## Contributions & Contact
 
-## Future Directions
-
-Checkout [issues](https://github.com/Phionx/bosonic-jax/issues) to see what we are working on these days!
-
-## Acknowledgements 
-
-**Core Devs:** [Shantanu Jha](https://github.com/Phionx), [Shoumik Chowdhury](https://github.com/shoumikdc), [Max Hays](https://scholar.google.com/citations?user=06z0MjwAAAAJ&hl=en)
-
-This package was developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/).
+This package is open source and, as such, very open to contributions. Please don't hesitate to open an issue, report a bug, request a feature, or create a pull request. We are also open to deeper collaborations to create a tool that is more useful for everyone. If a discussion would be helpful, please email [shanjha@mit.edu](mailto:shanjha@mit.edu) to set up a meeting. 
