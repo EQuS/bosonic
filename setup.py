@@ -74,7 +74,7 @@ setup(
     python_requires=">=3.7",
     project_urls={
         "Bug Tracker": "https://github.com/EQuS/bosonic-jax/issues",
-        "Documentation": "https://github.com/EQuS/bosonic-jax",
+        "Documentation": "https://equs.github.io/bosonic-jax",
         "Source Code": "https://github.com/EQuS/bosonic-jax",
         "Tutorials": "https://github.com/EQuS/bosonic-jax/tutorials",
         "Tests": "https://github.com/EQuS/bosonic-jax/test",
