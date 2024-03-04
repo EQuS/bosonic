@@ -39,7 +39,7 @@ cd bosonic-jax
 pip install --upgrade .
 ```
 
-If you also want to download the dependencies needed to run optional tutorials, please use `pip install --upgrade .[dev]` or `pip install --upgrade '.[dev]'` (for `zsh` users).
+If you also want to download the dependencies needed to run optional tutorials, please use `pip install --upgrade .[dev,docs]` or `pip install --upgrade '.[dev,docs]'` (for `zsh` users).
 
 ***Please Note:***
 For now, you will also have to manually install the `bosonic_jax` dependency, to learn how to do so please visit: [https://github.com/EQuS/bosonic-jax](https://github.com/EQuS/bosonic-jax).
@@ -50,9 +50,9 @@ If you intend to contribute to this project, please install `bosonic-jax` in dev
 ```sh
 git clone git@github.com:Phionx/bosonic-jax.git
 cd bosonic-jax
-pip install -e .[dev]
+pip install -e .[dev,docs]
 ```
-Please use `pip install -e '.[dev]'` if you are a `zsh` user.
+Please use `pip install -e '.[dev,docs]'` if you are a `zsh` user.
 
 
 Installing the package in the usual non-editable mode would require a developer to upgrade their pip installation (i.e. run `pip install --upgrade .`) every time they update the package source code.
@@ -65,23 +65,25 @@ For now, you will also have to manually install the `bosonic_jax` dependency, to
 
 Documentation should be viewable here: [https://github.com/pages/EQuS/bosonic-jax/](https://github.com/pages/EQuS/bosonic-jax/) 
 
-#### View locally
 
+### Build and view locally
 
-To view documentation locally, please open `docs/build/html/index.html` in your browser.
+To view documentation locally, plesae make sure the install the requirements under the `docs` extra, as specified above. Then, run the following:
 
-
-#### Build documentation 
-
-To rebuild documentation, please start in the root folder and run:
-
-```sh
-cd docs
-make clean
-make html
+```
+mkdocs serve
 ```
 
-*You may also have to delete the `docs/source/_autosummary` directory before running the above commands.*
+The documentation should now be at the url provided by the above command. 
+
+### Updating Docs
+
+The documentation should be updated automatically when any changes are made to the `main` branch. However, updates can also be forced by running:
+
+```
+mkdocs gh-deploy --force
+```
+This will build your documentation and deploy it to a branch gh-pages in your repository.
 
 ## Codebase
 

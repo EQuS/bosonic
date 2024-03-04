@@ -16,17 +16,20 @@ REQUIREMENTS = [
 ]
 
 EXTRA_REQUIREMENTS = {
-    "dev": [
+   "dev": [
         "jupyterlab>=3.1.0",
         "mypy",
         "pylint",
-        "black",
-        "sphinx",
-        "sphinx-book-theme",
-        "sphinxcontrib-napoleon",
-        "Jinja2<3.1",  # https://github.com/readthedocs/readthedocs.org/issues/9038
-        "myst-nb",
+        "black"
     ],
+    "docs": [
+        "mkdocs",
+        "mkdocs-material",
+        "mkdocs-literate-nav",
+        "mkdocs-section-index",
+        "mkdocs-gen-files",
+        "mkdocstrings-python",
+    ]
 }
 
 # Read long description from README.
