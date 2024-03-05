@@ -27,7 +27,7 @@ For more details, please visit the getting started > installation section of our
 
 Here's an example on how to use `bosonic-jax`:
 
-```
+```python
 from bosonic_jax import BosonicRegister, GKPQubit, Qubit, BosonicCircuit, PhaseRotationGate, CDGate, execute
 import jax.numpy as jnp
 
@@ -54,7 +54,7 @@ This package was initiall developed without JAX in the fall of 2021. Then, `boso
 
 Thank you for taking the time to try our package out. If you found it useful in your research, please cite us as follows:
 
-``` 
+```bibtex
 @unpublished{jha2024jaxquantum,
   title  = {An auto differentiable and hardware accelerated software toolkit for quantum circuit design, simulation and control},
   author = {Shantanu R. Jha, Shoumik Chowdhury, Max Hays, Jeff A. Grover, William D. Oliver},
