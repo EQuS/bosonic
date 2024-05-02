@@ -264,15 +264,21 @@ class BosonicQubit(metaclass=ABCMeta):
             pos = (i // 3, i % 3)
             ax = axs[pos]
             w_plt = self._plot_single(state, ax=ax, qp_type=qp_type, **kwargs)
-            ax.set_title(label)
+            ax.set_title(f"|{label}" + r"$\rangle$")
+            ax.set_xlabel(r"Re[$\alpha$]")
+            ax.set_ylabel(r"Im[$\alpha$]")
+
         fig.suptitle(self.name)
         fig.tight_layout()
         fig.subplots_adjust(right=0.8, hspace=0.2, wspace=0.2)
-        cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
+        fig.align_xlabels(axs)
+        fig.align_ylabels(axs)
+        cbar_ax = fig.add_axes([0.85 + 0.2, 0.15, 0.05, 0.7])
 
         ticks = np.linspace(vmin, vmax, 5)
         fig.colorbar(w_plt, cax=cbar_ax, ticks=ticks)
 
         cbar_ax.set_title(cbar_title, pad=20)
+        fig.tight_layout()
         plt.show()
 
