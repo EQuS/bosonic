@@ -22,7 +22,7 @@ from qutip.cy.math cimport erf, zerf
 from qutip.qobj import Qobj
 cdef double pi = 3.14159265358979323
 
-include '/opt/miniconda3/envs/bosonic-jax-env/lib/python3.8/site-packages/qutip/cy/complex_math.pxi'
+include '/opt/miniconda3/envs/bosonic-env/lib/python3.8/site-packages/qutip/cy/complex_math.pxi'
 
 cdef class CompiledStrCoeff(StrCoeff):
 

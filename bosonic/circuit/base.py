@@ -6,7 +6,7 @@ from typing import List, Tuple, Union, Type, cast, Dict, Optional, Any, Callable
 from abc import abstractmethod, ABCMeta
 from numbers import Number
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic.codes.base import BosonicQubit
 from jaxquantum.utils.utils import device_put_params
 import jaxquantum as jqt
 

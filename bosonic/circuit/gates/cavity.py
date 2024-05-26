@@ -3,7 +3,7 @@ Common Gates
 """
 from typing import List, Optional
 
-from bosonic_jax.circuit.base import BosonicGate
+from bosonic.circuit.base import BosonicGate
 import jaxquantum as jqt
 
 import jax.numpy as jnp

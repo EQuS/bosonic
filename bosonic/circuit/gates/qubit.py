@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import jax.numpy as jnp
 
-from bosonic_jax.circuit.base import BosonicGate
+from bosonic.circuit.base import BosonicGate
 import jaxquantum as jqt
 
 

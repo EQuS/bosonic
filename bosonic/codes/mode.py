@@ -4,7 +4,7 @@ Generic Bosonic Mode Class
 
 from typing import Tuple
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic.codes.base import BosonicQubit
 import jaxquantum as jqt
 
 from jax import config

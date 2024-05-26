@@ -4,7 +4,7 @@ Cat Code Qubit
 
 from typing import Tuple
 
-from bosonic_jax.codes.base import BosonicQubit
+from bosonic.codes.base import BosonicQubit
 import jaxquantum as jqt
 
 import jax.numpy as jnp

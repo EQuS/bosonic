@@ -1,34 +1,34 @@
 <h1 align="center">
-    <img src="./docs/assets/logo_sq.png" height="120" alt="bosonic-jax logo">
+    <img src="./docs/assets/logo_sq.png" height="120" alt="bosonic logo">
 </h1>
 
 
-[![License](https://img.shields.io/github/license/EQuS/bosonic-jax.svg?style=popout-square)](https://opensource.org/license/apache-2-0) [![](https://img.shields.io/github/release/EQuS/bosonic-jax.svg?style=popout-square)](https://github.com/EQuS/bosonic-jax/releases) [![](https://img.shields.io/pypi/dm/bosonic-jax.svg?style=popout-square)](https://pypi.org/project/bosonic-jax/)
+[![License](https://img.shields.io/github/license/EQuS/bosonic.svg?style=popout-square)](https://opensource.org/license/apache-2-0) [![](https://img.shields.io/github/release/EQuS/bosonic.svg?style=popout-square)](https://github.com/EQuS/bosonic/releases) [![](https://img.shields.io/pypi/dm/bosonic.svg?style=popout-square)](https://pypi.org/project/bosonic/)
 
 [S. R. Jha](https://github.com/Phionx), [S. Chowdhury](https://github.com/shoumikdc), [M. Hays](https://scholar.google.com/citations?user=06z0MjwAAAAJ), [J. A. Grover](https://scholar.google.com/citations?user=igewch8AAAAJ), [W. D. Oliver](https://scholar.google.com/citations?user=4vNbnqcAAAAJ&hl=en)
 
-**Docs:** [https://equs.github.io/bosonic-jax](https://equs.github.io/bosonic-jax)
+**Docs:** [https://equs.github.io/bosonic](https://equs.github.io/bosonic)
 
-We present `bosonic-jax` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic-jax` ontop of `JAX` to enable the auto differentiable and (CPU, GPU, TPU) accelerated unitary and hamiltonian simulation of these quantum circuits under experimentally realisitic noise and dissipation.
+We present `bosonic` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic` ontop of `JAX` to enable the auto differentiable and (CPU, GPU, TPU) accelerated unitary and hamiltonian simulation of these quantum circuits under experimentally realisitic noise and dissipation.
 
 
 ## Installation
 
-`bosonic-jax` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:
+`bosonic` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:
 
 ```bash
-pip install bosonic-jax
+pip install bosonic
 ```
 
-For more details, please visit the getting started > installation section of our [docs](https://equs.github.io/bosonic-jax/getting_started/installation.html).
+For more details, please visit the getting started > installation section of our [docs](https://equs.github.io/bosonic/getting_started/installation.html).
 
 
 ## An Example
 
-Here's an example on how to use `bosonic-jax`:
+Here's an example on how to use `bosonic`:
 
 ```python
-from bosonic_jax import BosonicRegister, GKPQubit, Qubit, BosonicCircuit, PhaseRotationGate, CDGate, execute
+from bosonic import BosonicRegister, GKPQubit, Qubit, BosonicCircuit, PhaseRotationGate, CDGate, execute
 import jax.numpy as jnp
 
 breg = BosonicRegister([GKPQubit(),Qubit()]) # [q0,q1]
@@ -48,7 +48,7 @@ results.plot(bcirc, 1)
 **Core Devs:** [Shantanu A. Jha](https://github.com/Phionx), [Shoumik Chowdhury](https://github.com/shoumikdc)
 
 
-This package was initiall developed without JAX in the fall of 2021. Then, `bosonic-jax` was rebuilt on JAX in early 2022. This package was briefly announced to the world at APS March Meeting 2023 and released to a select few academic groups shortly after. Since then, this package has been open sourced and developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/). 
+This package was initiall developed without JAX in the fall of 2021. Then, `bosonic` was rebuilt on JAX in early 2022. This package was briefly announced to the world at APS March Meeting 2023 and released to a select few academic groups shortly after. Since then, this package has been open sourced and developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/). 
 
 ## Citation
 
@@ -58,7 +58,7 @@ Thank you for taking the time to try our package out. If you found it useful in 
 @software{jha2024jaxquantum,
   author = {Shantanu R. Jha and Shoumik Chowdhury and Max Hays and Jeff A. Grover and William D. Oliver},
   title  = {An auto differentiable and hardware accelerated software toolkit for quantum circuit design, simulation and control},
-  url    = {https://github.com/EQuS/jaxquantum, https://github.com/EQuS/bosonic-jax, https://github.com/EQuS/qcsys},
+  url    = {https://github.com/EQuS/jaxquantum, https://github.com/EQuS/bosonic, https://github.com/EQuS/qcsys},
   version = {0.1.0},
   year   = {2024},
 }

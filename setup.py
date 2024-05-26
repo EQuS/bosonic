@@ -1,5 +1,5 @@
 """
-Setup for bosonic-jax
+Setup for bosonic
 """
 import os
 
@@ -38,19 +38,19 @@ with open(README_PATH) as readme_file:
     README = readme_file.read()
 
 version_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "bosonic_jax", "VERSION.txt")
+    os.path.join(os.path.dirname(__file__), "bosonic", "VERSION.txt")
 )
 
 with open(version_path, "r") as fd:
     version_str = fd.read().rstrip()
 
 setup(
-    name="bosonic-jax",
+    name="bosonic",
     version=version_str,
     description="Bosonic JAX",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/EQuS/bosonic-jax",
+    url="https://github.com/EQuS/bosonic",
     author="Shantanu Jha, Shoumik Chowdhury, Max Hays",
     author_email="shantanu.rajesh.jha@gmail.com",
     license="Apache 2.0",
@@ -73,11 +73,11 @@ setup(
     keywords="bosonic jax qubits cQED QEC GKP quantum error correction",
     python_requires=">=3.7",
     project_urls={
-        "Bug Tracker": "https://github.com/EQuS/bosonic-jax/issues",
-        "Documentation": "https://equs.github.io/bosonic-jax",
-        "Source Code": "https://github.com/EQuS/bosonic-jax",
-        "Tutorials": "https://github.com/EQuS/bosonic-jax/tutorials",
-        "Tests": "https://github.com/EQuS/bosonic-jax/test",
+        "Bug Tracker": "https://github.com/EQuS/bosonic/issues",
+        "Documentation": "https://equs.github.io/bosonic",
+        "Source Code": "https://github.com/EQuS/bosonic",
+        "Tutorials": "https://github.com/EQuS/bosonic/tutorials",
+        "Tests": "https://github.com/EQuS/bosonic/test",
     },
     include_package_data=True,
 )

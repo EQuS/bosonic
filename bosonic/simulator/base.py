@@ -8,7 +8,7 @@ from numbers import Number
 from typing import Optional, List
 import warnings
 
-from bosonic_jax.circuit.base import BosonicCircuit
+from bosonic.circuit.base import BosonicCircuit
 import jaxquantum as jqt
 
 
