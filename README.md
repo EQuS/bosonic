@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="./docs/assets/logo_sq.png" height="120" alt="bosonic logo">
+    <img src="https://github.com/EQuS/bosonic/raw/main/docs/assets/logo_sq.png" height="120" alt="bosonic logo">
 </h1>
 
 
