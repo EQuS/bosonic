@@ -9,7 +9,7 @@
 
 **Docs:** [https://equs.github.io/bosonic](https://equs.github.io/bosonic)
 
-We present `bosonic` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic` ontop of `JAX` to enable the auto differentiable and (CPU, GPU, TPU) accelerated unitary and hamiltonian simulation of these quantum circuits under experimentally realisitic noise and dissipation.
+We present `bosonic` as a framework with which to simulate quantum circuits built using bosonic quantum-error-correctable code qubits, such as the Gottesman, Kitaev and Preskill (GKP) code. As such, we build `bosonic` on top of `JAX` to enable the auto differentiable and (CPU, GPU, TPU) accelerated unitary and hamiltonian simulation of these quantum circuits under experimentally realistic noise and dissipation.
 
 
 ## Installation
@@ -48,7 +48,7 @@ results.plot(bcirc, 1)
 **Core Devs:** [Shantanu A. Jha](https://github.com/Phionx), [Shoumik Chowdhury](https://github.com/shoumikdc)
 
 
-This package was initiall developed without JAX in the fall of 2021. Then, `bosonic` was rebuilt on JAX in early 2022. This package was briefly announced to the world at APS March Meeting 2023 and released to a select few academic groups shortly after. Since then, this package has been open sourced and developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/). 
+This package was initially developed without JAX in the fall of 2021. Then, `bosonic` was rebuilt on JAX in early 2022. This package was briefly announced to the world at APS March Meeting 2023 and released to a select few academic groups shortly after. Since then, this package has been open sourced and developed while conducting research in the Engineering Quantum Systems Group at MIT with invaluable advice from [Prof. William D. Oliver](https://equs.mit.edu/william-d-oliver/). 
 
 ## Citation
 
