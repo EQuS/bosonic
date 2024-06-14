@@ -17,11 +17,23 @@ We present `bosonic` as a framework with which to simulate quantum circuits buil
 
 ## Installation
 
-`bosonic` is published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:
+**Recommended:** As this is a rapidly evolving project, we recommend installing the latest version of `bosonic` from source: 
+```
+pip install git+https://github.com/EQuS/bosonic.git
+```
+
+After installing `bosonic`, consider updating the `jaxquantum` dependency to its latest version from source:
+```
+pip install git+https://github.com/EQuS/jaxquantum.git
+```
+
+
+`bosonic` is also published on PyPI. So, to install the latest version from PyPI, simply run the following code to install the package:
 
 ```bash
 pip install bosonic
 ```
+
 
 For more details, please visit the getting started > installation section of our [docs](https://equs.github.io/bosonic/getting_started/installation.html).
 

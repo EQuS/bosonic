@@ -13,6 +13,7 @@ REQUIREMENTS = [
     "tqdm",
     "cython>=0.29.20",
     "jax[cpu]",
+    "jaxquantum"
 ]
 
 EXTRA_REQUIREMENTS = {
