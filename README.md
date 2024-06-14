@@ -8,6 +8,7 @@
 [S. R. Jha](https://github.com/Phionx), [S. Chowdhury](https://github.com/shoumikdc), [M. Hays](https://scholar.google.com/citations?user=06z0MjwAAAAJ), [J. A. Grover](https://scholar.google.com/citations?user=igewch8AAAAJ), [W. D. Oliver](https://scholar.google.com/citations?user=4vNbnqcAAAAJ&hl=en)
 
 **Docs:** [equs.github.io/bosonic](https://equs.github.io/bosonic)
+
 **Community Discord:** [discord.gg/frWqbjvZ4s](https://discord.gg/frWqbjvZ4s)
 
 
