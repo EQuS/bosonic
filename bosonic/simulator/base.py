@@ -12,7 +12,7 @@ from bosonic.circuit.base import BosonicCircuit
 import jaxquantum as jqt
 
 
-from jax import jit, vmap, Array
+from jax import vmap, Array
 from jax.experimental.ode import odeint
 from jax import tree_util
 from jax import config
@@ -166,7 +166,6 @@ def hamiltonian_simulate(
 # ==================================================================================
 
 
-@partial(jit, static_argnums=(0,))
 def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     p = p0 if p0 is not None else bcirc.default_initial_state.copy()
     p = jqt.qt2jqt(p)
@@ -181,7 +180,6 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
         results.append([p])
     return results
 
-@partial(jit, static_argnums=(2,))
 def unitary_jax_step(rho, U, use_density_matrix=False):
     if use_density_matrix:
         U_dag = U.dag()
@@ -189,8 +187,6 @@ def unitary_jax_step(rho, U, use_density_matrix=False):
     return U @ rho
 
 
-
-@partial(jit, static_argnums=(0, 3))
 def hamiltonian_jax_simulate(
     bcirc: BosonicCircuit,
     H0: jqt.Qarray,
@@ -246,15 +242,6 @@ def hamiltonian_jax_simulate(
     return results
 
 
-
-
-@partial(
-    jit,
-    static_argnums=(
-        0,
-        5,
-    ),
-)
 def hamiltonian_jax_step(
     H_func,  # H_func stores gate dynamics
     p: jqt.Qarray,
@@ -263,7 +250,6 @@ def hamiltonian_jax_step(
     c_ops=None,
     use_density_matrix=False,
 ):
-    @jit
     def Ht(t):
         return H_func(t) + H0
 

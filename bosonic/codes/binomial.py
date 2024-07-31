@@ -9,7 +9,7 @@ from jaxquantum.utils.utils import comb
 from bosonic.codes import BosonicQubit
 import jaxquantum as jqt
 
-from jax import jit, vmap
+from jax import vmap
 from jax import config
 import jax.numpy as jnp
 
@@ -45,8 +45,7 @@ class BinomialQubit(BosonicQubit):
         S = L + G
 
         M = jnp.max(jnp.array([L, G, 2 * D]))
-
-        @jit
+        
         def plus_z_gen(p):
             C = comb(M + 1, p)
             return jnp.sqrt(C) * jqt.basis(N, p * (S + 1)).data
@@ -54,7 +53,6 @@ class BinomialQubit(BosonicQubit):
         plus_z = jnp.sum(vmap(plus_z_gen)(jnp.arange(0, M + 2, 2)), axis=0)
         plus_z = jqt.unit(jqt.Qarray.create(plus_z))
 
-        @jit
         def minus_z_gen(p):
             C = comb(M + 1, p)
             return jnp.sqrt(C) * jqt.basis(N, p * (S + 1)).data
