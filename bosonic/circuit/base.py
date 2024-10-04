@@ -131,6 +131,12 @@ class BosonicCircuit:
         """
         self.gates.append(ZGate(self, bqubit_indx))
 
+    def h(self, bqubit_indx: int) -> None:
+        """
+        Logical Hadamard
+        """
+        self.gates.append(HGate(self, bqubit_indx))
+
     def draw(self):
         NotImplementedError("Not implemented yet!")
 
@@ -411,5 +417,24 @@ class ZGate(BosonicGate):
 
     def get_U(self) -> jqt.Qarray:
         Us = [self.bcirc.breg[self.bqubit_indxs[0]].z_U]
+        U_tot = self.extend_gate(Us)
+        return U_tot
+
+class HGate(BosonicGate):
+    label = "H"
+
+    def get_H(self) -> Optional[List]:
+        H = self.bcirc.breg[self.bqubit_indxs[0]].h_H
+        if H is None:
+            return None
+        Hs = [H]
+        H_tot = self.extend_gate(Hs)
+        return [H_tot]
+
+    def get_H_func(self, t: float) -> jqt.Qarray:
+        return self.H[0]
+
+    def get_U(self) -> jqt.Qarray:
+        Us = [self.bcirc.breg[self.bqubit_indxs[0]].h_U]
         U_tot = self.extend_gate(Us)
         return U_tot

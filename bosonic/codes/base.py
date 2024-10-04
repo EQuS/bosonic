@@ -159,6 +159,21 @@ class BosonicQubit(metaclass=ABCMeta):
         """
         return None
 
+
+    @property 
+    def h_H(self) -> Optional[jqt.Qarray]:
+        """
+        Logical Hadamard hamiltonian.
+        """
+        return None
+
+    @property
+    def h_U(self) -> jqt.Qarray:
+        """
+        Logical Hadamard unitary gate.
+        """
+        return self.basis["+x"] @ self.basis["+z"].dag() + self.basis["-x"] @ self.basis["-z"].dag()
+
     def _gen_pauli_U(self, basis_state: str) -> jqt.Qarray:
         """
         Generates unitary for Pauli X, Y, Z.

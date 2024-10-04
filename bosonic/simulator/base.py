@@ -118,6 +118,7 @@ def unitary_simulate(bcirc: BosonicCircuit, p0=None):
     p = bcirc.jqt2qt(p)
 
     results = BosonicResults()
+    results.append([p])
     for gate in bcirc.gates:
         U = gate.U_qt
         p = unitary_step(p, U)
@@ -137,6 +138,7 @@ def hamiltonian_simulate(
     H0 = bcirc.jqt2qt(H0)
 
     results = BosonicResults()
+    results.append([p])
     for gate in bcirc.gates:
         t_list = gate.ts
         H = deepcopy(gate.H_qt)
@@ -173,6 +175,7 @@ def unitary_jax_simulate(bcirc: BosonicCircuit, p0=None):
     use_density_matrix = p.is_dm()
     
     results = BosonicResults()
+    results.append([p])
     for gate in bcirc.gates:
         U = gate.U
         # U = jqt.qt2jqt(U) # TODO: check if necessary
@@ -216,6 +219,8 @@ def hamiltonian_jax_simulate(
     use_density_matrix = p.is_dm()
     results = BosonicResults() if results_in is None else results_in
 
+    results.append([p])
+    
     for gate in bcirc.gates:
         t_list = gate.ts
         use_hamiltonian = not (gate.H_func is None or gate.H_func(t_list[0]) is None)
