@@ -17,6 +17,7 @@ class CatQubit(BosonicQubit):
     """
     Cat Qubit Class.
     """
+    name = "cat"
 
     @property
     def _non_device_params(self):

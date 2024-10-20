@@ -15,6 +15,7 @@ class GKPQubit(BosonicQubit):
     """
     GKP Qubit Class.
     """
+    name = "gkp"
 
     def _params_validation(self):
         super()._params_validation()

@@ -20,6 +20,7 @@ class BinomialQubit(BosonicQubit):
     """
     Cat Qubit Class.
     """
+    name = "binomial"
 
     def _params_validation(self):
         super()._params_validation()

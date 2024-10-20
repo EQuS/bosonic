@@ -21,6 +21,7 @@ class BosonicQubit(metaclass=ABCMeta):
     """
     Base class for Bosonic Qubits.
     """
+    name = "bqubit"
 
     @property
     def _non_device_params(self):
@@ -29,8 +30,10 @@ class BosonicQubit(metaclass=ABCMeta):
         """
         return ["N"]
 
-    def __init__(self, params: Optional[Dict[str, float]] = None, name: str = "bqubit"):
-        self.name = name
+    def __init__(self, params: Optional[Dict[str, float]] = None, name: str = None):
+        if name is not None:
+            self.name = name
+
         self.params = params if params else {}
         self._params_validation()
 
