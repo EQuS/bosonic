@@ -253,7 +253,7 @@ class BosonicQubit(metaclass=ABCMeta):
             _, ax = plt.subplots(1, figsize=(4, 3), dpi=200)
 
         return jqt.plot_qp(
-            state, self.wigner_pts, ax=ax, contour=contour, qp_type=qp_type
+            state, self.wigner_pts, ax=ax, contour=contour, qp_type=qp_type, plot_cbar=False
         )
 
     def plot_code_states(self, qp_type: str = jqt.WIGNER, **kwargs):
@@ -281,7 +281,7 @@ class BosonicQubit(metaclass=ABCMeta):
             state = self._prepare_state_plot(self.basis[label])
             pos = (i // 3, i % 3)
             ax = axs[pos]
-            w_plt = self._plot_single(state, ax=ax, qp_type=qp_type, **kwargs)
+            _, im = self._plot_single(state, ax=ax, qp_type=qp_type, **kwargs)
             ax.set_title(f"|{label}" + r"$\rangle$")
             ax.set_xlabel(r"Re[$\alpha$]")
             ax.set_ylabel(r"Im[$\alpha$]")
@@ -294,7 +294,7 @@ class BosonicQubit(metaclass=ABCMeta):
         cbar_ax = fig.add_axes([0.85 + 0.2, 0.15, 0.05, 0.7])
 
         ticks = np.linspace(vmin, vmax, 5)
-        fig.colorbar(w_plt, cax=cbar_ax, ticks=ticks)
+        fig.colorbar(im, cax=cbar_ax, ticks=ticks)
 
         cbar_ax.set_title(cbar_title, pad=20)
         fig.tight_layout()
