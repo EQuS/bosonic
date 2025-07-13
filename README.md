@@ -2,6 +2,10 @@
     <img src="https://github.com/EQuS/bosonic/raw/main/docs/assets/logo_sq.png" height="120" alt="bosonic logo">
 </h1>
 
+This has been deprecated in favor of [`jaxquantum.circuits` and `jaxquantum.codes`](https://github.com/EQuS/jaxquantum) on Jul 13, 2025.
+
+---
+
 
 [![License](https://img.shields.io/github/license/EQuS/bosonic.svg?style=popout-square)](https://opensource.org/license/apache-2-0) [![](https://img.shields.io/github/release/EQuS/bosonic.svg?style=popout-square)](https://github.com/EQuS/bosonic/releases) [![](https://img.shields.io/pypi/dm/bosonic.svg?style=popout-square)](https://pypi.org/project/bosonic/)
 
