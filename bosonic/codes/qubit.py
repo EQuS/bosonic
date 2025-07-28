@@ -20,7 +20,6 @@ class Qubit(BosonicQubit):
     """
     FockQubit
     """
-
     def _params_validation(self):
         super()._params_validation()
         self.params["N"] = 2
@@ -34,15 +33,12 @@ class Qubit(BosonicQubit):
         minus_z = jqt.basis(N, 1)
         return plus_z, minus_z
 
-    @property
     def x_U(self) -> jqt.Qarray:
         return jqt.sigmax()
 
-    @property
     def y_U(self) -> jqt.Qarray:
         return jqt.sigmay()
 
-    @property
     def z_U(self) -> jqt.Qarray:
         return jqt.sigmaz()
 

@@ -13,7 +13,7 @@ import jax.scipy as jsp
 
 class GKPQubit(BosonicQubit):
     """
-    GKP Qubit Class.
+    GKP Qudit Class.
     """
     name = "gkp"
 
@@ -22,7 +22,11 @@ class GKPQubit(BosonicQubit):
 
         if "delta" not in self.params:
             self.params["delta"] = 0.25
-        self.params["l"] = 2.0 * jnp.sqrt(jnp.pi)
+
+        if 'd' not in self.params:
+            self.params['d'] = 2
+
+        self.params["l"] = jnp.sqrt(jnp.pi * self.params['d'])
         s_delta = jnp.sinh(self.params["delta"] ** 2)
         self.params["epsilon"] = s_delta * self.params["l"]
 
@@ -33,71 +37,39 @@ class GKPQubit(BosonicQubit):
         super()._gen_common_gates()
 
         # phase space
-        self.common_gates["x"] = (
-            self.common_gates["a_dag"] + self.common_gates["a"]
-        ) / jnp.sqrt(2.0)
-        self.common_gates["p"] = (
-            1.0j * (self.common_gates["a_dag"] - self.common_gates["a"]) / jnp.sqrt(2.0)
-        )
+        self.common_gates["x"] = (self.common_gates["a_dag"] + self.common_gates["a"]) / jnp.sqrt(self.params['d'])
+        self.common_gates["p"] = (1.0j * (self.common_gates["a_dag"] - self.common_gates["a"]) / jnp.sqrt(self.params['d']))
 
         # finite energy
-        self.common_gates["E"] = jqt.expm(
-            -self.params["delta"] ** 2
-            * self.common_gates["a_dag"]
-            @ self.common_gates["a"]
-        )
-        self.common_gates["E_inv"] = jqt.expm(
-            self.params["delta"] ** 2
-            * self.common_gates["a_dag"]
-            @ self.common_gates["a"]
-        )
+        self.common_gates["E"] = jqt.expm(-self.params["delta"] ** 2* self.common_gates["a_dag"]@ self.common_gates["a"])
+        self.common_gates["E_inv"] = jqt.expm(self.params["delta"] ** 2* self.common_gates["a_dag"]@ self.common_gates["a"])
 
         # axis
         x_axis, z_axis = self._get_axis()
         y_axis = x_axis + z_axis
 
         # gates
-        X_0 = jqt.expm(1.0j * self.params["l"] / 2.0 * z_axis)
-        Z_0 = jqt.expm(1.0j * self.params["l"] / 2.0 * x_axis)
+        X_0 = jqt.expm(1.0j * self.params["l"] * jnp.sqrt(2) / self.params['d'] * z_axis)
+        Z_0 = jqt.expm(1.0j * self.params["l"] * jnp.sqrt(2) / self.params['d']* x_axis)
         Y_0 = 1.0j * X_0 @ Z_0
+
         self.common_gates["X"] = self._make_op_finite_energy(X_0)
         self.common_gates["Z"] = self._make_op_finite_energy(Z_0)
         self.common_gates["Y"] = self._make_op_finite_energy(Y_0)
 
         # symmetric stabilizers and gates
-        self.common_gates["Z_s_0"] = self._symmetrized_expm(
-            1.0j * self.params["l"] / 2.0 * x_axis
-        )
-        self.common_gates["S_x_0"] = self._symmetrized_expm(
-            1.0j * self.params["l"] * z_axis
-        )
-        self.common_gates["S_z_0"] = self._symmetrized_expm(
-            1.0j * self.params["l"] * x_axis
-        )
-        self.common_gates["S_y_0"] = self._symmetrized_expm(
-            1.0j * self.params["l"] * y_axis
-        )
+        self.common_gates["Z_s_0"] = self._symmetrized_expm(1.0j * self.params["l"] / self.params['d'] * x_axis)
+        self.common_gates["S_x_0"] = self._symmetrized_expm(1.0j * self.params["l"] * z_axis * jnp.sqrt(2))
+        self.common_gates["S_z_0"] = self._symmetrized_expm(1.0j * self.params["l"] * x_axis * jnp.sqrt(2))
+        self.common_gates["S_y_0"] = self._symmetrized_expm(1.0j * self.params["l"] * y_axis * jnp.sqrt(2))
 
     def _get_basis_z(self) -> Tuple[jqt.Qarray, jqt.Qarray]:
         """
-        Construct basis states |+-x>, |+-y>, |+-z>.
-        step 1: use ideal GKP stabilizers to find ideal GKP |+z> state
-        step 2: make ideal eigenvector finite energy
-            We want the groundstate of H = E H_0 E⁻¹.
-            So, we can begin by find the groundstate of H_0 -> |λ₀⟩
-            Then, we know that E|λ₀⟩ = |λ⟩ is the groundstate of H.
-            pf. H|λ⟩ = (E H_0 E⁻¹)(E|λ₀⟩) = E H_0 |λ₀⟩ = λ₀ (E|λ₀⟩) = λ₀|λ⟩
+        Construct basis states |+z> and |-z> for the GKP qubit.
 
-        TODO (if necessary):
-            Alternatively, we could construct a hamiltonian using
-            finite energy stabilizers S_x, S_y, S_z, Z_s. However,
-            this would make H = - S_x - S_y - S_z - Z_s non-hermitian.
-            Currently, JAX does not support derivatives of jnp.linalg.eig,
-            while it does support derivatives of jnp.linalg.eigh.
-            Discussion: https://github.com/google/jax/issues/2748
+        Returns:
+            Tuple[jqt.Qarray, jqt.Qarray]: The |+z> and |-z> basis states.
         """
-
-        # step 1: use ideal GKP stabilizers to find ideal GKP |+z> state
         H_0 = (
             -self.common_gates["S_x_0"]
             - self.common_gates["S_y_0"]
@@ -111,7 +83,6 @@ class GKPQubit(BosonicQubit):
         # step 2: make ideal eigenvector finite energy
         gstate = self.common_gates["E"] @ gstate_ideal
 
-        N = self.params["N"]
         plus_z = jqt.unit(gstate)
         minus_z = self.common_gates["X"] @ plus_z
         return plus_z, minus_z
